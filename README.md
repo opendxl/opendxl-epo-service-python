@@ -27,7 +27,7 @@ To start using the McAfee ePolicy Orchestrator (ePO) DXL Python Service:
 
 ## Bugs and Feedback
 
-For bugs, questions and discussions please use the [Github Issues](https://github.com/opendxl/opendxl-epo-service-python/issues).
+For bugs, questions and discussions please use the [GitHub Issues](https://github.com/opendxl/opendxl-epo-service-python/issues).
 
 ## LICENSE
 
