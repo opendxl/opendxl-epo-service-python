@@ -37,8 +37,8 @@ class EpoService(object):
 
     # The name of the ePO DXL service that is registered with the fabric
     DXL_SERVICE_NAME = "/mcafee/service/epo/remote"
-    # The prefix for request topics that are associated with the ePO DXL service
-    DXL_REQUEST_PREFIX = "/mcafee/service/epo/remote/"
+    # The format for request topics that are associated with the ePO DXL service
+    DXL_REQUEST_FORMAT = "/mcafee/service/epo/remote/{0}"
     # The timeout used when registering/unregistering the service
     DXL_SERVICE_REGISTRATION_TIMEOUT = 60
 
@@ -188,7 +188,7 @@ class EpoService(object):
                 logger.info("GUID '{0}' found for ePO server: {1}".format(unique_id, epo_name))
 
             # Create the request topic based on the ePO's unique identifier
-            request_topic = ''.join([self.DXL_REQUEST_PREFIX, unique_id])
+            request_topic = self.DXL_REQUEST_FORMAT.format(unique_id)
             logger.info("Request topic '{0}' associated with ePO server: {1}".format(
                 request_topic, epo_name))
             # Associate ePO wrapper instance with the request topic

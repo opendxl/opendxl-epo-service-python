@@ -27,9 +27,6 @@ logger = logging.getLogger(__name__)
 # Create DXL configuration from file
 config = DxlClientConfig.create_dxl_config_from_file(CONFIG_FILE)
 
-# The DXL request prefix for invoking remote commands
-DXL_REQUEST_PREFIX = "/mcafee/service/epo/remote/"
-
 # The ePO unique identifier
 EPO_UNIQUE_ID = "<specify-ePO-unique-identifier>"
 
@@ -39,7 +36,7 @@ with DxlClient(config) as client:
     # Connect to the fabric
     client.connect()
 
-    req = Request(''.join([DXL_REQUEST_PREFIX, EPO_UNIQUE_ID]))
+    req = Request("/mcafee/service/epo/remote/{0}".format(EPO_UNIQUE_ID))
 
     req.payload = \
         json.dumps({
