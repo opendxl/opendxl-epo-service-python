@@ -5,7 +5,7 @@
 # NOTE: Prior to running this sample you must provide values for the following
 #       constants in this file:
 #
-#       EPO_UNIQUE_ID : The unique identifier used to identifier the ePO server
+#       EPO_UNIQUE_ID : The unique identifier used to identify the ePO server
 #                       on the DXL fabric.
 #
 #       SEARCH_TEXT   : The search text to use (system name, etc.)
