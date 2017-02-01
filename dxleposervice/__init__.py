@@ -2,6 +2,7 @@
 ################################################################################
 # Copyright (c) 2017 McAfee Inc. - All Rights Reserved.
 ################################################################################
+
 from __future__ import absolute_import
 
 from .service import EpoService
@@ -16,3 +17,4 @@ def get_version():
     :return: The version of the McAfee ePolicy Orchestrator (ePO) service
     """
     return __version__
+

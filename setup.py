@@ -20,6 +20,7 @@ dist = setup(
     # Requirements
     install_requires={
         "dxlclient",
+        "requests"
     },
 
     # Application author details:
@@ -28,7 +29,7 @@ dist = setup(
     # License
     license="Apache License 2.0",
 
-    keywords=['opendxl', 'dxl', 'mcafee', 'service, 'epo'],
+    keywords=['opendxl', 'dxl', 'mcafee', 'service', 'epo'],
 
     # Packages
     packages=[
