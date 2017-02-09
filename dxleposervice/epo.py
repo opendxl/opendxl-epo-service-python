@@ -3,6 +3,7 @@
 # Copyright (c) 2017 McAfee Inc. - All Rights Reserved.
 ################################################################################
 
+import json
 import logging
 import requests
 import warnings
@@ -23,6 +24,9 @@ class _Epo(object):
     # The key within the status report used to determine the ePO server's
     # unique identifier (GUID)
     UNIQUE_ID_KEY = "uniqueId"
+
+    # UTF-8 encoding (used for encoding/decoding payloads)
+    UTF_8 = "utf-8"
 
     def __init__(self, name, host, port, user, password, verify):
         """
@@ -48,11 +52,12 @@ class _Epo(object):
         try:
             response = self._client.invoke_command(self.DXL_CLIENT_STATUS_REPORT_COMMAND,
                                                    {}, output="json")
+            response_dict = json.loads(response.decode(self.UTF_8))
 
-            if self.UNIQUE_ID_KEY not in response:
+            if self.UNIQUE_ID_KEY not in response_dict:
                 raise Exception("Unable to find '{0}' in response.".format(self.UNIQUE_ID_KEY))
 
-            return response[self.UNIQUE_ID_KEY]
+            return response_dict[self.UNIQUE_ID_KEY]
         except:
             logger.exception("Error attempting to lookup GUID for ePO server: {0}".format(self._name))
             raise

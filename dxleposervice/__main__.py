@@ -37,6 +37,8 @@ def signal_handler(signum, frame):
             # Stop the service
             running = False
             run_condition.notify()
+        else:
+            exit(1)
 
 # Signals to register for
 signal.signal(signal.SIGTERM, signal_handler)

@@ -35,8 +35,8 @@ class EpoService(object):
     # The name of the ePO service configuration file
     DXL_EPO_SERVICE_CONFIG_FILE = "dxleposervice.config"
 
-    # The name of the ePO DXL service that is registered with the fabric
-    DXL_SERVICE_NAME = "/mcafee/service/epo/remote"
+    # The type of the ePO DXL service that is registered with the fabric
+    DXL_SERVICE_TYPE = "/mcafee/service/epo/remote"
     # The format for request topics that are associated with the ePO DXL service
     DXL_REQUEST_FORMAT = "/mcafee/service/epo/remote/{0}"
     # The timeout used when registering/unregistering the service
@@ -229,7 +229,7 @@ class EpoService(object):
 
         try:
             # Register service
-            service = ServiceRegistrationInfo(client, self.DXL_SERVICE_NAME)
+            service = ServiceRegistrationInfo(client, self.DXL_SERVICE_TYPE)
             for request_topic in self._epo_by_topic:
                 service.add_topic(str(request_topic), _EpoRequestCallback(client, self._epo_by_topic))
 
