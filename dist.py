@@ -13,7 +13,7 @@ from distutils.archive_util import make_archive
 print("Starting dist.\n")
 
 VERSION = __import__('dxleposervice').get_version()
-RELEASE_NAME = "dxleposervice-python-sdk-" + str(VERSION)
+RELEASE_NAME = "dxleposervice-python-distribution-" + str(VERSION)
 
 DIST_PY_FILE_LOCATION = os.path.dirname(os.path.realpath(__file__))
 DIST_DIRECTORY = os.path.join(DIST_PY_FILE_LOCATION, "dist")
@@ -79,6 +79,10 @@ run_setup(SETUP_PY,
            DIST_LIB_DIRECTORY,
            "--python-tag",
            "py2.7"])
+
+# cp -rf config dist
+print("\nCopying config in to dist directory\n")
+copy_tree(os.path.join(DIST_PY_FILE_LOCATION, "config"), os.path.join(DIST_DIRECTORY, "config"))
 
 # cp -rf sample dist
 print("\nCopying sample in to dist directory\n")

@@ -1,9 +1,9 @@
-# This sample invokes and displays the results of the "core help" command via
-# the ePO DXL service. This displays the remote commands that are exposed by
-# the ePO server.
+# This sample invokes and displays the results of the “core help” remote
+# command via the ePO DXL service. The “core help” command lists the
+# remote commands that are exposed by the particular ePO server.
 #
-# NOTE: Prior to running this sample you must provide values for the following
-#       constants in this file:
+# NOTE: Prior to running this sample you must provide a value for the following
+#       constant in this file:
 #
 #       EPO_UNIQUE_ID : The unique identifier used to identify the ePO server
 #                       on the DXL fabric.
@@ -36,8 +36,10 @@ with DxlClient(config) as client:
     # Connect to the fabric
     client.connect()
 
+    # Create the request
     req = Request("/mcafee/service/epo/remote/{0}".format(EPO_UNIQUE_ID))
 
+    # Set the payload for the request (core.help remote command)
     req.payload = \
         json.dumps({
             "command": "core.help",
@@ -48,6 +50,7 @@ with DxlClient(config) as client:
     # Send the request
     res = client.sync_request(req)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
+        # Display resulting payload
         print res.payload.decode(encoding='utf-8')
     else:
         print "Error: {0} ({1}) ".format(res.error_message, str(res.error_code))

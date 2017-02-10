@@ -16,7 +16,7 @@ from dxlclient.service import ServiceRegistrationInfo
 from dxlclient.callbacks import RequestCallback
 from dxlclient.message import ErrorResponse, Response
 
-from epo import _Epo
+from _epo import _Epo
 
 # Configure local logger
 logger = logging.getLogger(__name__)
