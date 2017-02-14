@@ -102,7 +102,11 @@ DXL Service Configuration File (dxleposervice.config)
         | user                   | yes      | The name of the user used to login to the ePO server.              |
         |                        |          |                                                                    |
         |                        |          | This user will be used to invoke remote commands on this server    |
-        |                        |          | when requests are received via the DXL fabric.                     |
+        |                        |          |                                                                    |
+        |                        |          | **NOTE: All of the remote commands available to the specified user |
+        |                        |          | will be exposed to the fabric. Thus, it is important to select     |
+        |                        |          | a user that only exposes the desired remote commands to the DXL    |
+        |                        |          | fabric (and nothing additional).**                                 |
         +------------------------+----------+--------------------------------------------------------------------+
         | password               | yes      | The password associated with the user used to login to the ePO     |
         |                        |          | server.                                                            |
@@ -120,10 +124,21 @@ DXL Service Configuration File (dxleposervice.config)
         |                        |          | For example: ``/mcafee/service/epo/remote/epo1``                   |
         +------------------------+----------+--------------------------------------------------------------------+
         | verifyCertificate      | no       | Whether to verify that the hostname in the ePO's certificate       |
-        |                        |          | matches the ePO server being connected to.                         |
+        |                        |          | matches the ePO server being connected to and that the certificate |
+        |                        |          | was signed by a valid authority.                                   |
         |                        |          |                                                                    |
         |                        |          | Verify certificate is optional and will default to enabled if not  |
         |                        |          | specified.                                                         |
+        |                        |          |                                                                    |
+        |                        |          | **NOTE: This property should only be disabled for testing purposes |
+        |                        |          | (never for a production environment).**                            |
+        +------------------------+----------+--------------------------------------------------------------------+
+        | verifyCertBundle       | no       | A path to a CA Bundle file or a directory containing certificates  |
+        |                        |          | of trusted CAs. The CA Bundle is used to ensure that the           |
+        |                        |          | ePO server being connected to was signed by a valid authority.     |
+        |                        |          |                                                                    |
+        |                        |          | This property is only applicable if the ``verityCertificate``      |
+        |                        |          | property is set to ``yes``.                                        |
         +------------------------+----------+--------------------------------------------------------------------+
 
 Logging File (logging.config)

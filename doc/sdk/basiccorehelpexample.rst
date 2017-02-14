@@ -9,7 +9,7 @@ Prerequisites
 *************
 * The samples configuration step has been completed (see :doc:`sampleconfig`)
 * The ePO DXL service is running (see :doc:`running`)
-* TODO AUTH
+* The client is authorized to invoke the ePO DXL Service (see :doc:`authorization`)
 
 Setup
 *****

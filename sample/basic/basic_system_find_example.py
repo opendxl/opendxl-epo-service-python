@@ -51,7 +51,7 @@ with DxlClient(config) as client:
         }).encode(encoding="utf-8")
 
     # Send the request
-    res = client.sync_request(req)
+    res = client.sync_request(req, timeout=30)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
         response_dict = json.loads(res.payload, encoding='utf-8')
         print json.dumps(response_dict, sort_keys=True, indent=4, separators=(',', ': '))

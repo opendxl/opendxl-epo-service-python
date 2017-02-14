@@ -45,3 +45,5 @@ Basic
     :maxdepth: 1
 
     basiccorehelpexample
+    basicsystemfindexample
+

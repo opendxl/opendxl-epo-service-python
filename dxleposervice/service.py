@@ -66,6 +66,10 @@ class EpoService(object):
     # Whether to verify that the hostname in the ePO's certificate matches the ePO
     # server being connected to. (optional, enabled by default)
     EPO_VERIFY_CERTIFICATE = "verifyCertificate"
+    # A path to a CA Bundle file or a directory containing certificates of trusted CAs.
+    # The CA Bundle is used to ensure that the ePO server being connected to was signed by a
+    # valid authority.
+    EPO_VERIFY_CERT_BUNDLE = "verifyCertBundle"
 
     # Default value for verifying certificates
     DEFAULT_VERIFY_CERTIFICATE = True
@@ -170,6 +174,21 @@ class EpoService(object):
                 verify = config.getboolean(epo_name, self.EPO_VERIFY_CERTIFICATE)
             except NoOptionError:
                 pass
+
+            # CA Bundle
+            if verify:
+                try:
+                    ca_bundle = config.get(epo_name, self.EPO_VERIFY_CERT_BUNDLE)
+                    if ca_bundle:
+                        ca_bundle = self._get_path(ca_bundle)
+                        verify = ca_bundle
+
+                        if not os.access(verify, os.R_OK):
+                            raise Exception(
+                                "Unable to access CA bundle file/dir ({0}): {1}".format(
+                                    self.EPO_VERIFY_CERT_BUNDLE, verify))
+                except NoOptionError:
+                    pass
 
             # Create ePO wrapper
             epo = _Epo(name=epo_name, host=host, port=port, user=user,
@@ -280,6 +299,19 @@ class EpoService(object):
                     self._dxl_client = None
                 self._destroyed = True
 
+    def _get_path(self, in_path):
+        """
+        Returns an absolute path for a file specified in the configuration file (supports
+        files relative to the configuration file).
+        :param in_path: The specified path
+        :return: An absolute path for a file specified in the configuration file
+        """
+        if not(os.path.isfile(in_path) or os.path.isdir(in_path)) \
+                and not os.path.isabs(in_path):
+            config_rel_path = os.path.join(self._config_dir, in_path)
+            if os.path.isfile(config_rel_path) or os.path.isdir(config_rel_path):
+                in_path = config_rel_path
+        return in_path
 
 class _EpoRequestCallback(RequestCallback):
     """
@@ -348,6 +380,7 @@ class _EpoRequestCallback(RequestCallback):
             self._dxl_client.send_response(response)
 
         except Exception as ex:
+            logger.exception("Error while processing request")
             # Send error response
             self._dxl_client.send_response(
                 ErrorResponse(request,

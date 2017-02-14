@@ -1,5 +1,5 @@
-# This sample invokes and displays the results of the “core help” remote
-# command via the ePO DXL service. The “core help” command lists the
+# This sample invokes and displays the results of the "core help" remote
+# command via the ePO DXL service. The "core help" command lists the
 # remote commands that are exposed by the particular ePO server.
 #
 # NOTE: Prior to running this sample you must provide a value for the following
@@ -48,7 +48,7 @@ with DxlClient(config) as client:
         }).encode(encoding="utf-8")
 
     # Send the request
-    res = client.sync_request(req)
+    res = client.sync_request(req, timeout=30)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display resulting payload
         print res.payload.decode(encoding='utf-8')
