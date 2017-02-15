@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ePO Certificate Verification &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation" href="index.html" />
+    <link rel="next" title="Running Service" href="running.html" />
+    <link rel="prev" title="Service Configuration" href="configuration.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="running.html" title="Running Service"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Service Configuration"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="epo-certificate-verification">
+<h1>ePO Certificate Verification<a class="headerlink" href="#epo-certificate-verification" title="Permalink to this headline">¶</a></h1>
+<p>The ePO DXL service supports validating the authenticity of the certificate associated with each ePO server that is
+being connected to.</p>
+<p>Enabling and disabling of this capability is controlled via the <code class="docutils literal"><span class="pre">verifyCertificate</span></code> property that is associated with
+each ePO server defined within the server configuration file
+(see <a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a>). While this validation can be disabled, it
+is highly recommended that it be enabled for production environments.</p>
+<p>The remainder of this page walks through the steps necessary to obtain the information required to perform this
+validation successfully.</p>
+<p>Two types of certificate validation take place when connecting to an ePO server:</p>
+<ol class="arabic simple">
+<li>The <code class="docutils literal"><span class="pre">host</span></code> as defined in the service configuration file for the ePO server must match the hostname in the
+ePO server&#8217;s certificate.</li>
+<li>The ePO server&#8217;s certificate must be signed by a Certificate Authority (CA) that can be found in the
+CA bundle (specified via the <code class="docutils literal"><span class="pre">verifyCertBundle</span></code> property) associated with the ePO server in the service
+configuration file.</li>
+</ol>
+<p>To determine the hostname in the ePO server&#8217;s certificate and the certificate of the signing CA you can execute
+the following command via <code class="docutils literal"><span class="pre">openssl</span></code>.</p>
+<blockquote>
+<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openssl</span> <span class="n">s_client</span> <span class="o">-</span><span class="n">showcerts</span> <span class="o">-</span><span class="n">connect</span> <span class="o">&lt;</span><span class="n">epo</span><span class="o">-</span><span class="n">host</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">epo</span><span class="o">-</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For example:</p>
+<blockquote>
+<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openssl</span> <span class="n">s_client</span> <span class="o">-</span><span class="n">showcerts</span> <span class="o">-</span><span class="n">connect</span> <span class="n">epotestsystem</span><span class="p">:</span><span class="mi">8443</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The output of the command should appear similar to the following:</p>
+<blockquote>
+<div><pre class="literal-block">
+CONNECTED(00000003)
+depth=1 O = McAfee, OU = Orion, CN = Orion_CA_epotestsystem
+verify error:num=19:self signed certificate in certificate chain
+---
+Certificate chain
+ 0 s:/O=McAfee/OU=Orion/<strong>CN=epotestsystem</strong>
+   i:/O=McAfee/OU=Orion/CN=Orion_CA_epotestsystem
+-----BEGIN CERTIFICATE-----
+MIIDQTCCAimgAwIBAgIIbIZ7jokCYykwDQYJKoZIhvcNAQEFBQAwPDEPMA0GA1UE
+CgwGTWNBZmVlMQ4wDAYDVQQLDAVPcmlvbjEZMBcGA1UEAwwQT3Jpb25fQ0FfRFhM
+LUVQTzAeFw03MDAxMDEwMDAwMDBaFw00NjA5MDUyMzM3MjVaMDMxDzANBgNVBAoM
+Bk1jQWZlZTEOMAwGA1UECwwFT3Jpb24xEDAOBgNVBAMMB0RYTC1FUE8wggEiMA0G
+CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCPBctQ4yvubzJlJII4yiFaLbch0dFy
+aUHR6WUJUumAMgHr5Qk06t/I5zFbAvEQYzKsWpX5qPLt90ZwVdEYipTDeuR4zp5c
+AUy8tgPNGGVwdcLraw6du/qw4knOsI9aWzQ0iCXKkthOEAtV+6CPeKVtKfjNi0la
+UsX0s7S3PQzEjppDVojoXAyt0EA0d38mEEoNpt02oJpCldo8JAtLB8GytVkYxxNi
+aSMfb/Ix36PQXZuU7id1xA7y0oT9slBY3Scs4H0vr1FAv4a9ChE7sCOFH9ng+MbM
+kPjBVevcSIsOcZdfs4ACGwiPrp0rWxGl71frJ0qx4RQnWbBq4jRPRNQ7AgMBAAGj
+UDBOMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFOnjEeu4L3W6Qyc/r37OJaMi5mfh
+MB8GA1UdIwQYMBaAFKitli7CNwfamTztGieYRrWLs57FMA0GCSqGSIb3DQEBBQUA
+A4IBAQARcMWJnIKC97cqT8ok0w3sEaVhplkI518tnctyoHgcavNRbbNFMjWWybzp
++zrGCehV7j+IIeVI8Zkxom6CByeAl//J4IeZe8T862ZRvjy9oNeojlmWXlAhSX+2
+8NzATXCvmVzM+qE3F+k1cpD8MFwkIdPY6osOqdPM7Fit04jwizdyg5JFkJPH7aeB
+FzngfaQOcZv+WFfcMNftUIpRlusRsvYdU8TU3mYCi5G5L3Uva4RLsmb3z5m/V+f4
+CGrL15OX6nduGr5D8mfWHXdlxF1KWx7FlCHdgzHws5+w+KIPoDr0u5XK38xxBXIm
+KTyOYAwDg5Mo/2R33q/Fy1fsY8nG
+-----END CERTIFICATE-----
+ 1 s:/O=McAfee/OU=Orion/CN=Orion_CA_epotestsystem
+   i:/O=McAfee/OU=Orion/CN=Orion_CA_epotestsystem
+<strong>-----BEGIN CERTIFICATE-----
+MIIDTTCCAjWgAwIBAgIIffd6gTDU39wwDQYJKoZIhvcNAQEFBQAwPDEPMA0GA1UE
+CgwGTWNBZmVlMQ4wDAYDVQQLDAVPcmlvbjEZMBcGA1UEAwwQT3Jpb25fQ0FfRFhM
+LUVQTzAeFw03MDAxMDEwMDAwMDBaFw00NjA5MDUyMzM3MjRaMDwxDzANBgNVBAoM
+Bk1jQWZlZTEOMAwGA1UECwwFT3Jpb24xGTAXBgNVBAMMEE9yaW9uX0NBX0RYTC1F
+UE8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDRMqxPEBBkYrcmWg5T
+X2r3Z+bidvGGcPzA2vACvdY4DCGkLTtc085EOQoULRNdGSI6yP9W9YH8nquTreHW
+O80Aj29kr9Il3+JXad04LzBbjW5MhMCf4fnGiJ5E9ud2BE/xc6RTco/8bIoR27BC
+VoTnyHcU0gHz7+PZWaQrPhRKEaNbG3RddY7zKjq56s32rBti2LBbjGg7qVSMLewy
+MuBl9owzWwYC8bJnbqHH3h4LdtsG/Zb1ohsR2PaY2gb+Bn2DjWlBVFiFozRKKSLU
+ipXlBxiYRRrkfOhEneWiptdLo65cXLd09hRc8h7dEPlYl9jZHGpOBvX1aGjre8w8
+LlrXAgMBAAGjUzBRMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFKitli7CNwfa
+mTztGieYRrWLs57FMB8GA1UdIwQYMBaAFKitli7CNwfamTztGieYRrWLs57FMA0G
+CSqGSIb3DQEBBQUAA4IBAQAyHKcG55dOvJJPRf9Xt+Uj3nwd1gyehbOhKJYfDqeZ
+l5EYGuNpX3HFl3BLjNxqxoj/aw1ICJX4AQQpFRsnB2CjQA53/1+0Cmvq4lw7qL/A
+5sbshJKy+4291THE16ynqAF2cySlxhdSpvDMB3Z0v9iGqt5yYvhMc5yHhCpipj0r
+iYY/K8QhEtruGy4lHxjwKOf5Ky1nX1pAZmRK4IDQTdn4iT3Cl9Jgr+ERFou7PHXN
+0k8wmi1b2oPp5OCJoeB4xzsrbdG2aCgTDTflzL9RiEeflhwlWim2X2oCyZKVW4a4
+/Tzcdk4tZlgZazxEDTJ8wI+12JNGBXMN5fuaF5Yuykf1
+-----END CERTIFICATE-----</strong>
+
+...
+</pre>
+</div></blockquote>
+<p>In the output above, the two important portions for validating the ePO server&#8217;s certificate have been
+highlighted in bold.</p>
+<ol class="arabic">
+<li><p class="first">The first portion includes the common name (CN) associated with the ePO server&#8217;s certificate.</p>
+<p>In this particular example the CN is as follows: <code class="docutils literal"><span class="pre">CN=epotestsystem</span></code></p>
+<p>Based on this, for hostname validation to succeed the <code class="docutils literal"><span class="pre">host</span></code> value for the ePO server as defined in the
+service configuration file must have a value of <code class="docutils literal"><span class="pre">epotestsystem</span></code>.</p>
+</li>
+<li><p class="first">The second portion highlighted is the certificate of the CA that was used to sign the ePO server&#8217;s certificate.</p>
+<p>For certificate validation to succeed, this certificate text must be copied (including the <cite>BEGIN</cite> and <cite>END</cite> lines)
+into a new file. Next, the <code class="docutils literal"><span class="pre">verifyCertBundle</span></code> value for the ePO server as defined in the service configuration
+file must have a path to this newly created file.</p>
+<p>For example:</p>
+<blockquote>
+<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-----</span><span class="n">BEGIN</span> <span class="n">CERTIFICATE</span><span class="o">-----</span>
+<span class="n">MIIDTTCCAjWgAwIBAgIIffd6gTDU39wwDQYJKoZIhvcNAQEFBQAwPDEPMA0GA1UE</span>
+<span class="n">CgwGTWNBZmVlMQ4wDAYDVQQLDAVPcmlvbjEZMBcGA1UEAwwQT3Jpb25fQ0FfRFhM</span>
+<span class="n">LUVQTzAeFw03MDAxMDEwMDAwMDBaFw00NjA5MDUyMzM3MjRaMDwxDzANBgNVBAoM</span>
+<span class="n">Bk1jQWZlZTEOMAwGA1UECwwFT3Jpb24xGTAXBgNVBAMMEE9yaW9uX0NBX0RYTC1F</span>
+<span class="n">UE8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDRMqxPEBBkYrcmWg5T</span>
+<span class="n">X2r3Z</span><span class="o">+</span><span class="n">bidvGGcPzA2vACvdY4DCGkLTtc085EOQoULRNdGSI6yP9W9YH8nquTreHW</span>
+<span class="n">O80Aj29kr9Il3</span><span class="o">+</span><span class="n">JXad04LzBbjW5MhMCf4fnGiJ5E9ud2BE</span><span class="o">/</span><span class="n">xc6RTco</span><span class="o">/</span><span class="mi">8</span><span class="n">bIoR27BC</span>
+<span class="n">VoTnyHcU0gHz7</span><span class="o">+</span><span class="n">PZWaQrPhRKEaNbG3RddY7zKjq56s32rBti2LBbjGg7qVSMLewy</span>
+<span class="n">MuBl9owzWwYC8bJnbqHH3h4LdtsG</span><span class="o">/</span><span class="n">Zb1ohsR2PaY2gb</span><span class="o">+</span><span class="n">Bn2DjWlBVFiFozRKKSLU</span>
+<span class="n">ipXlBxiYRRrkfOhEneWiptdLo65cXLd09hRc8h7dEPlYl9jZHGpOBvX1aGjre8w8</span>
+<span class="n">LlrXAgMBAAGjUzBRMA8GA1UdEwEB</span><span class="o">/</span><span class="n">wQFMAMBAf8wHQYDVR0OBBYEFKitli7CNwfa</span>
+<span class="n">mTztGieYRrWLs57FMB8GA1UdIwQYMBaAFKitli7CNwfamTztGieYRrWLs57FMA0G</span>
+<span class="n">CSqGSIb3DQEBBQUAA4IBAQAyHKcG55dOvJJPRf9Xt</span><span class="o">+</span><span class="n">Uj3nwd1gyehbOhKJYfDqeZ</span>
+<span class="n">l5EYGuNpX3HFl3BLjNxqxoj</span><span class="o">/</span><span class="n">aw1ICJX4AQQpFRsnB2CjQA53</span><span class="o">/</span><span class="mi">1</span><span class="o">+</span><span class="mi">0</span><span class="n">Cmvq4lw7qL</span><span class="o">/</span><span class="n">A</span>
+<span class="mi">5</span><span class="n">sbshJKy</span><span class="o">+</span><span class="mi">4291</span><span class="n">THE16ynqAF2cySlxhdSpvDMB3Z0v9iGqt5yYvhMc5yHhCpipj0r</span>
+<span class="n">iYY</span><span class="o">/</span><span class="n">K8QhEtruGy4lHxjwKOf5Ky1nX1pAZmRK4IDQTdn4iT3Cl9Jgr</span><span class="o">+</span><span class="n">ERFou7PHXN</span>
+<span class="mi">0</span><span class="n">k8wmi1b2oPp5OCJoeB4xzsrbdG2aCgTDTflzL9RiEeflhwlWim2X2oCyZKVW4a4</span>
+<span class="o">/</span><span class="n">Tzcdk4tZlgZazxEDTJ8wI</span><span class="o">+</span><span class="mi">12</span><span class="n">JNGBXMN5fuaF5Yuykf1</span>
+<span class="o">-----</span><span class="n">END</span> <span class="n">CERTIFICATE</span><span class="o">-----</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="previous chapter">Service Configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="running.html"
+                        title="next chapter">Running Service</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/epocertverification.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="running.html" title="Running Service"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Service Configuration"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

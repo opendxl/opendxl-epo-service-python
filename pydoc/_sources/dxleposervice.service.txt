@@ -1,0 +1,7 @@
+dxleposervice.service module
+============================
+
+.. automodule:: dxleposervice.service
+    :members:
+    :undoc-members:
+    :show-inheritance:

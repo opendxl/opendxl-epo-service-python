@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Authorization &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation" href="index.html" />
+    <link rel="next" title="Samples Configuration" href="sampleconfig.html" />
+    <link rel="prev" title="Running Service" href="running.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sampleconfig.html" title="Samples Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="running.html" title="Running Service"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="authorization">
+<h1>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h1>
+<p>A critical aspect of exposing ePO to the DXL fabric is adding an authorization policy that restricts which
+clients can provide the service and which clients can invoke the service.</p>
+<p>For an overview of DXL authorization, please see the following page:</p>
+<p><a class="reference external" href="https://opendxl.github.io/opendxl-client-python/pydoc/topicauthoverview.html">https://opendxl.github.io/opendxl-client-python/pydoc/topicauthoverview.html</a></p>
+<p><strong>NOTE: As of DXL 3.0.1 certificate-based authentication and authorization information is not automatically replicated
+between ePO servers. Therefore, the following steps must be repeated for each ePO server that is connected
+to the DXL fabric.</strong></p>
+<div class="section" id="create-topic-group">
+<h2>Create Topic Group<a class="headerlink" href="#create-topic-group" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to create a <cite>Topic Group</cite> for the <cite>ePO DXL Service</cite>.</p>
+<img alt="_images/addtopicgroup.png" src="_images/addtopicgroup.png" />
+<p>As shown in the screenshot above, a <cite>topic</cite> should be added for each ePO server that is being exposed by the
+ePO DXL service. The last portion of the topic matches the <code class="docutils literal"><span class="pre">uniqueId</span></code> associated with the ePO Server
+(see <a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a>).</p>
+<p>Multiple topic groups can be created if different authorization policies are necessary for different ePO servers.</p>
+</div>
+<div class="section" id="service-authorization">
+<h2>Service Authorization<a class="headerlink" href="#service-authorization" title="Permalink to this headline">¶</a></h2>
+<p>This section walks through the steps to restrict which clients can provide (run) the ePO DXL Service.</p>
+<img alt="_images/restrictreceive.png" src="_images/restrictreceive.png" />
+<p>As show in the screenshot above, select the &#8220;ePO DXL Service&#8221; topic group and then select the
+&#8220;Restrict Receive Certificates&#8221; action.</p>
+<img alt="_images/restrictreceivecert.png" src="_images/restrictreceivecert.png" />
+<p>Next, select the certificate(s) associated with the clients that will be providing (running) the ePO DXL Service.
+In the screenshot above, the certificate with the common name of &#8220;ePO DXL Service&#8221; is selected. Once the
+appropriate certificates are selected click &#8220;OK&#8221;.</p>
+<img alt="_images/restrictsend.png" src="_images/restrictsend.png" />
+<p>At this point we have restricted which clients can provide the ePO DXL service, but we have done nothing to restrict
+which clients can invoke the service. The easiest thing to do is to limit the sending capability to the same
+certificate that is providing the service. This effectively means that that no clients wil be able to invoke
+the ePO DXL service.</p>
+<p>There must always be send restrictions associated with the ePO DXL service. If no restrictions exist, all clients are
+permitted to invoke the service.</p>
+<p>As show in the screenshot above, select the &#8220;ePO DXL Service&#8221; topic group and then select the
+&#8220;Restrict Send Certificates&#8221; action.</p>
+<img alt="_images/restrictsendcert.png" src="_images/restrictsendcert.png" />
+<p>Next, select the same certificates that were chosen in the previous step for restricting receive.
+In the screenshot above, the certificate with the common name of &#8220;ePO DXL Service&#8221; is selected. Once the
+appropriate certificates are selected click &#8220;OK&#8221;.</p>
+</div>
+<div class="section" id="client-authorization">
+<span id="id1"></span><h2>Client Authorization<a class="headerlink" href="#client-authorization" title="Permalink to this headline">¶</a></h2>
+<p>This section walks through the steps to restrict which clients can invoke the ePO DXL Service.</p>
+<img alt="_images/restrictsend2.png" src="_images/restrictsend2.png" />
+<p>As show in the screenshot above, select the &#8220;ePO DXL Service&#8221; topic group and then select the
+&#8220;Restrict Send Certificates&#8221; action.</p>
+<img alt="_images/restrictsendcert2.png" src="_images/restrictsendcert2.png" />
+<p>Next, select the certificates associated with the clients that are allowed to invoke the ePO DXL Service.
+In the screenshot above, the certificates with common names of &#8220;ePO DXL Service&#8221; and
+&#8220;ePO DXL Service Samples Client&#8221; are selected. Once the appropriate certificates are selected click &#8220;OK&#8221;.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Authorization</a><ul>
+<li><a class="reference internal" href="#create-topic-group">Create Topic Group</a></li>
+<li><a class="reference internal" href="#service-authorization">Service Authorization</a></li>
+<li><a class="reference internal" href="#client-authorization">Client Authorization</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="running.html"
+                        title="previous chapter">Running Service</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sampleconfig.html"
+                        title="next chapter">Samples Configuration</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/authorization.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sampleconfig.html" title="Samples Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="running.html" title="Running Service"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

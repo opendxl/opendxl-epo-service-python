@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Service Configuration &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation" href="index.html" />
+    <link rel="next" title="ePO Certificate Verification" href="epocertverification.html" />
+    <link rel="prev" title="Service Installation" href="installation.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="epocertverification.html" title="ePO Certificate Verification"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Service Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="service-configuration">
+<h1>Service Configuration<a class="headerlink" href="#service-configuration" title="Permalink to this headline">¶</a></h1>
+<p>The ePO DXL service requires a set of configuration files to operate.</p>
+<p>This distribution contains a <code class="docutils literal"><span class="pre">config</span></code> sub-directory that includes the configuration files that must
+be populated prior to running the service.</p>
+<p>Each of these files are documented throughout the remained of this page.</p>
+<p>Service configuration directory:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">/</span>
+    <span class="n">dxlclient</span><span class="o">.</span><span class="n">config</span>
+    <span class="n">dxleposervice</span><span class="o">.</span><span class="n">config</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">config</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="section" id="dxl-client-configuration-file-dxlclient-config">
+<h2>DXL Client Configuration File (dxlclient.config)<a class="headerlink" href="#dxl-client-configuration-file-dxlclient-config" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The required <code class="docutils literal"><span class="pre">dxlclient.config</span></code> file is used to configure the DXL client that will connect to the DXL fabric
+and expose the ePO DXL service.</p>
+<p>The steps to populate this configuration file are the same as those documented in the <cite>OpenDXL Python
+SDK</cite>, see the
+<a class="reference external" href="https://opendxl.github.io/opendxl-client-python/pydoc/sampleconfig.html">OpenDXL Python SDK Samples Configuration</a>
+page for more information.</p>
+<p>The following is an example of a populated DXL client configuration file:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Certs</span><span class="p">]</span>
+<span class="n">BrokerCertChain</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\\<span class="n">certificates</span>\\<span class="n">brokercerts</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">CertFile</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\\<span class="n">certificates</span>\\<span class="n">client</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">PrivateKey</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\\<span class="n">certificates</span>\\<span class="n">client</span><span class="o">.</span><span class="n">key</span>
+
+<span class="p">[</span><span class="n">Brokers</span><span class="p">]</span>
+<span class="p">{</span><span class="mi">5</span><span class="n">d73b77f</span><span class="o">-</span><span class="mi">8</span><span class="n">c4b</span><span class="o">-</span><span class="mi">4</span><span class="n">ae0</span><span class="o">-</span><span class="n">b437</span><span class="o">-</span><span class="n">febd12facfd4</span><span class="p">}</span><span class="o">=</span><span class="p">{</span><span class="mi">5</span><span class="n">d73b77f</span><span class="o">-</span><span class="mi">8</span><span class="n">c4b</span><span class="o">-</span><span class="mi">4</span><span class="n">ae0</span><span class="o">-</span><span class="n">b437</span><span class="o">-</span><span class="n">febd12facfd4</span><span class="p">};</span><span class="mi">8883</span><span class="p">;</span><span class="n">mybroker</span><span class="o">.</span><span class="n">mcafee</span><span class="o">.</span><span class="n">com</span><span class="p">;</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.12</span>
+<span class="p">{</span><span class="mf">24397e4</span><span class="n">d</span><span class="o">-</span><span class="mi">645</span><span class="n">f</span><span class="o">-</span><span class="mi">4</span><span class="n">f2f</span><span class="o">-</span><span class="mi">974</span><span class="n">f</span><span class="o">-</span><span class="n">f98c55bdddf7</span><span class="p">}</span><span class="o">=</span><span class="p">{</span><span class="mf">24397e4</span><span class="n">d</span><span class="o">-</span><span class="mi">645</span><span class="n">f</span><span class="o">-</span><span class="mi">4</span><span class="n">f2f</span><span class="o">-</span><span class="mi">974</span><span class="n">f</span><span class="o">-</span><span class="n">f98c55bdddf7</span><span class="p">};</span><span class="mi">8883</span><span class="p">;</span><span class="n">mybroker2</span><span class="o">.</span><span class="n">mcafee</span><span class="o">.</span><span class="n">com</span><span class="p">;</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.13</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="dxl-service-configuration-file-dxleposervice-config">
+<span id="dxl-service-config-file-label"></span><h2>DXL Service Configuration File (dxleposervice.config)<a class="headerlink" href="#dxl-service-configuration-file-dxleposervice-config" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The required <code class="docutils literal"><span class="pre">dxleposervice.config</span></code> file is used to configure the ePO DXL Service. Specifically, it is
+used to specify information about the ePO servers whose remote commands will be exposed to the DXL fabric.</p>
+<p>The following is an example of a populated ePO DXL service configuration file:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">General</span><span class="p">]</span>
+<span class="n">epoNames</span><span class="o">=</span><span class="n">epo1</span>
+
+<span class="p">[</span><span class="n">epo1</span><span class="p">]</span>
+<span class="n">host</span><span class="o">=</span><span class="n">epotestsystem</span>
+<span class="n">port</span><span class="o">=</span><span class="mi">8443</span>
+<span class="n">user</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">password</span><span class="o">=</span><span class="n">password</span>
+<span class="n">uniqueId</span><span class="o">=</span><span class="n">epo1</span>
+<span class="n">verifyCertificate</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">verifyCertBundle</span><span class="o">=</span><span class="n">epoCA</span><span class="o">.</span><span class="n">crt</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>General Section</strong></p>
+<blockquote>
+<div><p>The <code class="docutils literal"><span class="pre">[General]</span></code> section is used to specify the list of ePO servers to expose to the DXL fabric. Multiple
+ePO servers can be exposed via a single ePO DXL service instance.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="10%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>epoNames</td>
+<td>yes</td>
+<td><p class="first">The list of ePO servers to expose to the DXL fabric delimited by
+commas.</p>
+<p>For example: <code class="docutils literal"><span class="pre">epo1,epo2,epo3</span></code></p>
+<p class="last">For each ePO name specified, a corresponding section must be
+defined within this configuration file that provides detailed
+information about the server (see &#8220;ePO Section&#8221; below).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p><strong>ePO Section (1 per ePO server)</strong></p>
+<blockquote>
+<div><p>Each ePO server specified in the <code class="docutils literal"><span class="pre">epoNames</span></code> property of the <code class="docutils literal"><span class="pre">[General]</span></code> section must have a
+section defined which contains details about the particular server.</p>
+<p>The section name must match the name of the ePO in the <code class="docutils literal"><span class="pre">epoNames</span></code> property (for example: <code class="docutils literal"><span class="pre">[epo1]</span></code>).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="10%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>host</td>
+<td>yes</td>
+<td><p class="first">The hostname (or IP address) of the ePO Server to expose to the
+DXL fabric.</p>
+<p class="last"><strong>NOTE: If the</strong> <code class="docutils literal"><span class="pre">verifyCertificate</span></code> <strong>property is set to</strong>
+<code class="docutils literal"><span class="pre">yes</span></code> <strong>the host value must match the &#8220;CN value&#8221; in the ePO
+server&#8217;s certificate.</strong></p>
+</td>
+</tr>
+<tr class="row-odd"><td>port</td>
+<td>no</td>
+<td><p class="first">The ePO server communication port.</p>
+<p class="last">Port is optional and defaults to <code class="docutils literal"><span class="pre">8443</span></code> if not specified.</p>
+</td>
+</tr>
+<tr class="row-even"><td>user</td>
+<td>yes</td>
+<td><p class="first">The name of the user used to login to the ePO server.</p>
+<p>This user will be used to invoke remote commands on this server.</p>
+<p class="last"><strong>NOTE: All of the remote commands available to the specified user
+will be exposed to the fabric. Thus, it is important to select
+a user that only exposes the desired remote commands to the DXL
+fabric (and nothing additional).</strong></p>
+</td>
+</tr>
+<tr class="row-odd"><td>password</td>
+<td>yes</td>
+<td>The password associated with the user used to login to the ePO
+server.</td>
+</tr>
+<tr class="row-even"><td>uniqueId</td>
+<td>no</td>
+<td><p class="first">A unique identifier used to identify the ePO server on the DXL
+fabric.</p>
+<p>The unique identifier is optional and will default to the GUID of
+the ePO server if not specified.</p>
+<p>This unique identifier will be the last portion of the request
+topic that is used to invoke remote commands on this ePO server
+via the DXL fabric.</p>
+<p class="last">For example: <code class="docutils literal"><span class="pre">/mcafee/service/epo/remote/epo1</span></code></p>
+</td>
+</tr>
+<tr class="row-odd"><td>verifyCertificate</td>
+<td>no</td>
+<td><p class="first">Whether to verify that the hostname in the ePO&#8217;s certificate
+matches the ePO server being connected to and that the certificate
+was signed by a valid authority.</p>
+<p>Verify certificate is optional and will default to enabled if not
+specified.</p>
+<p class="last"><strong>NOTE: This property should only be disabled for testing purposes
+(never for a production environment).</strong></p>
+</td>
+</tr>
+<tr class="row-even"><td>verifyCertBundle</td>
+<td>no</td>
+<td><p class="first">A path to a CA Bundle file containing certificates
+of trusted CAs. The CA Bundle is used to ensure that the
+ePO server being connected to was signed by a valid authority.</p>
+<p class="last">This property is only applicable if the <code class="docutils literal"><span class="pre">verityCertificate</span></code>
+property is set to <code class="docutils literal"><span class="pre">yes</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="logging-file-logging-config">
+<h2>Logging File (logging.config)<a class="headerlink" href="#logging-file-logging-config" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>The optional <code class="docutils literal"><span class="pre">logging.config</span></code> file is used to configure how the ePO DXL Service writes log messages.</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Service Configuration</a><ul>
+<li><a class="reference internal" href="#dxl-client-configuration-file-dxlclient-config">DXL Client Configuration File (dxlclient.config)</a></li>
+<li><a class="reference internal" href="#dxl-service-configuration-file-dxleposervice-config">DXL Service Configuration File (dxleposervice.config)</a></li>
+<li><a class="reference internal" href="#logging-file-logging-config">Logging File (logging.config)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Service Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="epocertverification.html"
+                        title="next chapter">ePO Certificate Verification</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/configuration.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="epocertverification.html" title="ePO Certificate Verification"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Service Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>
