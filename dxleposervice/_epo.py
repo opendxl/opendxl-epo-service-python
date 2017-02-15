@@ -128,6 +128,7 @@ class _EpoRemote(object):
         logger.debug('Invoking command {} with the following parameters:'.format(command_name))
         logger.debug(params)
         with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", ".*subjectAltName.*")
             if not self._verify:
                 warnings.filterwarnings("ignore", "Unverified HTTPS request")
             return self._session.get('{}/{}'.format(self._baseurl, command_name),

@@ -2,14 +2,14 @@ Basic Core Help Example
 ========================
 
 This sample invokes and displays the results of the "core help" remote command via the ePO DXL service.
-The "core help" command lists the remote commands that are exposed by the particular ePO server.
+The "core help" command lists the remote commands that are exposed by a particular ePO server.
 
 
 Prerequisites
 *************
 * The samples configuration step has been completed (see :doc:`sampleconfig`)
 * The ePO DXL service is running (see :doc:`running`)
-* The client is authorized to invoke the ePO DXL Service (see :doc:`authorization`)
+* The client is authorized to invoke the ePO DXL Service (see :ref:`Client Authorization <client_authorization>`)
 
 Setup
 *****
@@ -54,7 +54,7 @@ The output should appear similar to the following:
 
         ...
 
-Each remote command exposed by the particular ePO server is listed along with its associated arguments.
+Each remote command exposed by the particular ePO server is listed along with its associated parameters.
 
 Details
 *******
@@ -84,20 +84,20 @@ The majority of the sample code is shown below:
                 }).encode(encoding="utf-8")
 
             # Send the request
-            res = client.sync_request(req)
+            res = client.sync_request(req, timeout=30)
             if res.message_type != Message.MESSAGE_TYPE_ERROR:
                 # Display resulting payload
                 print res.payload.decode(encoding='utf-8')
             else:
                 print "Error: {0} ({1}) ".format(res.error_message, str(res.error_code))
 
-After connecting to the DXL fabric, a `request message` is created with a topic that targets the ePO DXL service with
-a unique identifier that is associated with the ePO server to invoke the remote command on.
+After connecting to the DXL fabric, a `request message` is created with a topic that targets the ePO DXL service
+including a unique identifier that is associated with the ePO server to invoke the remote command on.
 
 The next step is to set the `payload` of the request message. The contents of the payload include the remote
 command to invoke, the output style for the ePO server response (json, xml, verbose, or terse), and
 any parameters for the command. In this particular case the ``core.help`` command is being invoked with an output
-style of ``verbose``. This particular command requires no parameters so an empty dictionary (``dict``) is specified.
+style of ``verbose``. This particular command requires no parameters, so an empty dictionary (``dict``) is specified.
 
 The final step is to perform a `synchronous request` via the DXL fabric. If the `response message` is not an error
 its contents are displayed.

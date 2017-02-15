@@ -8,6 +8,10 @@ For an overview of DXL authorization, please see the following page:
 
 `<https://opendxl.github.io/opendxl-client-python/pydoc/topicauthoverview.html>`_
 
+**NOTE: As of DXL 3.0.1 certificate-based authentication and authorization information is not automatically replicated
+between ePO servers. Therefore, the following steps must be repeated for each ePO server that is connected
+to the DXL fabric.**
+
 Create Topic Group
 ------------------
 
@@ -56,6 +60,8 @@ Next, select the same certificates that were chosen in the previous step for res
 In the screenshot above, the certificate with the common name of "ePO DXL Service" is selected. Once the
 appropriate certificates are selected click "OK".
 
+.. _client_authorization:
+
 Client Authorization
 --------------------
 
@@ -68,6 +74,6 @@ As show in the screenshot above, select the "ePO DXL Service" topic group and th
 
 .. image:: restrictsendcert2.png
 
-Next, select the certificates associated with the clients that will allowed to invoke the ePO DXL Service.
+Next, select the certificates associated with the clients that are allowed to invoke the ePO DXL Service.
 In the screenshot above, the certificates with common names of "ePO DXL Service" and
 "ePO DXL Service Samples Client" are selected. Once the appropriate certificates are selected click "OK".

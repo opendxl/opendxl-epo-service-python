@@ -66,7 +66,7 @@ class EpoService(object):
     # Whether to verify that the hostname in the ePO's certificate matches the ePO
     # server being connected to. (optional, enabled by default)
     EPO_VERIFY_CERTIFICATE = "verifyCertificate"
-    # A path to a CA Bundle file or a directory containing certificates of trusted CAs.
+    # A path to a CA Bundle file containing certificates of trusted CAs.
     # The CA Bundle is used to ensure that the ePO server being connected to was signed by a
     # valid authority.
     EPO_VERIFY_CERT_BUNDLE = "verifyCertBundle"
@@ -306,10 +306,9 @@ class EpoService(object):
         :param in_path: The specified path
         :return: An absolute path for a file specified in the configuration file
         """
-        if not(os.path.isfile(in_path) or os.path.isdir(in_path)) \
-                and not os.path.isabs(in_path):
+        if not os.path.isfile(in_path) and not os.path.isabs(in_path):
             config_rel_path = os.path.join(self._config_dir, in_path)
-            if os.path.isfile(config_rel_path) or os.path.isdir(config_rel_path):
+            if os.path.isfile(config_rel_path):
                 in_path = config_rel_path
         return in_path
 

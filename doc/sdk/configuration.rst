@@ -57,12 +57,13 @@ DXL Service Configuration File (dxleposervice.config)
             epoNames=epo1
 
             [epo1]
-            host=192.168.1.1
+            host=epotestsystem
             port=8443
             user=admin
             password=password
             uniqueId=epo1
-            verifyCertificate=no
+            verifyCertificate=yes
+            verifyCertBundle=epoCA.crt
 
     **General Section**
 
@@ -94,6 +95,10 @@ DXL Service Configuration File (dxleposervice.config)
         +========================+==========+====================================================================+
         | host                   | yes      | The hostname (or IP address) of the ePO Server to expose to the    |
         |                        |          | DXL fabric.                                                        |
+        |                        |          |                                                                    |
+        |                        |          | **NOTE: If the** ``verifyCertificate`` **property is set to**      |
+        |                        |          | ``yes`` **the host value must match the "CN value" in the ePO      |
+        |                        |          | server's certificate.**                                            |
         +------------------------+----------+--------------------------------------------------------------------+
         | port                   | no       | The ePO server communication port.                                 |
         |                        |          |                                                                    |
@@ -101,7 +106,7 @@ DXL Service Configuration File (dxleposervice.config)
         +------------------------+----------+--------------------------------------------------------------------+
         | user                   | yes      | The name of the user used to login to the ePO server.              |
         |                        |          |                                                                    |
-        |                        |          | This user will be used to invoke remote commands on this server    |
+        |                        |          | This user will be used to invoke remote commands on this server.   |
         |                        |          |                                                                    |
         |                        |          | **NOTE: All of the remote commands available to the specified user |
         |                        |          | will be exposed to the fabric. Thus, it is important to select     |
@@ -133,7 +138,7 @@ DXL Service Configuration File (dxleposervice.config)
         |                        |          | **NOTE: This property should only be disabled for testing purposes |
         |                        |          | (never for a production environment).**                            |
         +------------------------+----------+--------------------------------------------------------------------+
-        | verifyCertBundle       | no       | A path to a CA Bundle file or a directory containing certificates  |
+        | verifyCertBundle       | no       | A path to a CA Bundle file containing certificates                 |
         |                        |          | of trusted CAs. The CA Bundle is used to ensure that the           |
         |                        |          | ePO server being connected to was signed by a valid authority.     |
         |                        |          |                                                                    |

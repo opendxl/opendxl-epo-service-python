@@ -18,6 +18,7 @@ Installation and Configuration
 
 	installation
 	configuration
+	epocertverification
 	running
 
 Authorization
@@ -46,4 +47,12 @@ Basic
 
     basiccorehelpexample
     basicsystemfindexample
+
+Python API
+----------
+
+.. toctree::
+    :titlesonly:
+
+    dxleposervice
 
