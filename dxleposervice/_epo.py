@@ -59,7 +59,7 @@ class _Epo(object):
 
             return response_dict[self.UNIQUE_ID_KEY]
         except:
-            logger.exception("Error attempting to lookup GUID for ePO server: {0}".format(self._name))
+            logger.error("Error attempting to lookup GUID for ePO server: {0}".format(self._name))
             raise
 
     def execute(self, command, output, req_params):
@@ -165,5 +165,5 @@ class _EpoRemote(object):
 
             return result
         except:
-            logger.exception('Exception while parsing response.')
+            logger.error('Exception while parsing response.')
             raise
