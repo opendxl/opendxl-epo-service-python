@@ -109,6 +109,10 @@ remove_tree(os.path.join(DIST_PY_FILE_LOCATION, "dxleposervice.egg-info"))
 print("\nMaking dist zip\n")
 make_archive(DIST_RELEASE_DIR, "zip", DIST_DIRECTORY, RELEASE_NAME)
 
+# Make config dist zip
+print("\nMaking dist config zip\n")
+make_archive(DIST_RELEASE_DIR + "-config", "gztar", os.path.join(DIST_RELEASE_DIR, "config"))
+
 print("\nRemoving " + DIST_RELEASE_DIR + "\n")
 remove_tree(DIST_RELEASE_DIR)
 
