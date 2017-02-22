@@ -25,6 +25,13 @@ To start using the McAfee ePolicy Orchestrator (ePO) DXL Python Service:
 * View the `README.html` file located at the root of the extracted files.
   * The `README` links to the documentation which includes installation instructions and usage examples.
 
+## Docker Support
+
+A pre-built Docker image can be used as an alternative to installing a Python environment with the
+modules required for the ePO DXL service.
+
+See the [Docker Support Documentation](https://opendxl.github.io/opendxl-epo-service-python/pydoc/docker.html) for details.
+
 ## Bugs and Feedback
 
 For bugs, questions and discussions please use the [GitHub Issues](https://github.com/opendxl/opendxl-epo-service-python/issues).

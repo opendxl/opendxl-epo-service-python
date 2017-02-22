@@ -1,7 +1,7 @@
 Docker Support
 ==============
 
-A pre-built docker image can be used as an alternative to installing a Python environment and the
+A pre-built Docker image can be used as an alternative to installing a Python environment with the
 modules required for the ePO DXL service. Docker images for the ePO DXL service are posted to the
 following Docker repository:
 

@@ -131,7 +131,7 @@ make_archive(DIST_RELEASE_DIR, "zip", DIST_DIRECTORY, RELEASE_NAME)
 
 # Make config dist zip
 print("\nMaking dist config zip\n")
-make_archive(CONFIG_RELEASE_DIR, "gztar", DIST_DIRECTORY, "config")
+make_archive(CONFIG_RELEASE_DIR, "gztar", os.path.join(DIST_RELEASE_DIR, "config"))
 
 print("\nRemoving " + DIST_RELEASE_DIR + "\n")
 remove_tree(DIST_RELEASE_DIR)
