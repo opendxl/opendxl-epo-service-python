@@ -17,6 +17,8 @@ Service configuration directory:
             dxleposervice.config
             logging.config (optional)
 
+.. _dxl_client_config_file_label:
+
 DXL Client Configuration File (dxlclient.config)
 ------------------------------------------------
 

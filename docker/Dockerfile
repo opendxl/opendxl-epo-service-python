@@ -32,4 +32,4 @@ RUN rm -rf /tmp/build
 #
 #   -v /host/dir/to/config:/opt/dxleposervice/config
 #
-CMD ["python", "-m", "dxleposervice", "/opt/dxleposervice/config"]
+CMD ["python", "-m", "dxleposervice", "/opt/dxleposervice-config"]

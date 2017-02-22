@@ -9,11 +9,28 @@ from distutils.dir_util import copy_tree, remove_tree
 from distutils.file_util import copy_file, move_file
 from distutils.core import run_setup
 from distutils.archive_util import make_archive
+from tempfile import mkstemp
+from shutil import move
+
+
+def replace(file_path, pattern, subst):
+    # Create temp file
+    fh, abs_path = mkstemp()
+    with open(abs_path,'w') as new_file:
+        with open(file_path) as old_file:
+            for line in old_file:
+                new_file.write(line.replace(pattern, subst))
+    os.close(fh)
+    # Remove original file
+    os.remove(file_path)
+    # Move new file
+    move(abs_path, file_path)
 
 print("Starting dist.\n")
 
 VERSION = __import__('dxleposervice').get_version()
 RELEASE_NAME = "dxleposervice-python-distribution-" + str(VERSION)
+CONFIG_RELEASE_NAME = "dxleposervice-python-config-" + str(VERSION)
 
 DIST_PY_FILE_LOCATION = os.path.dirname(os.path.realpath(__file__))
 DIST_DIRECTORY = os.path.join(DIST_PY_FILE_LOCATION, "dist")
@@ -21,6 +38,7 @@ DIST_DOCTMP_DIR = os.path.join(DIST_DIRECTORY, "doctmp")
 SETUP_PY = os.path.join(DIST_PY_FILE_LOCATION, "setup.py")
 DIST_LIB_DIRECTORY = os.path.join(DIST_DIRECTORY, "lib")
 DIST_RELEASE_DIR = os.path.join(DIST_DIRECTORY, RELEASE_NAME)
+CONFIG_RELEASE_DIR = os.path.join(DIST_DIRECTORY, CONFIG_RELEASE_NAME)
 
 # Remove the dist directory if it exists
 if os.path.exists(DIST_DIRECTORY):
@@ -48,6 +66,8 @@ copy_tree(os.path.join(DIST_PY_FILE_LOCATION, "doc", "sdk"), DIST_DOCTMP_DIR)
 # Call Sphinx build
 print("\nCalling sphinx-build\n")
 subprocess.check_call(["sphinx-build", "-b", "html", DIST_DOCTMP_DIR, os.path.join(DIST_DIRECTORY, "doc")])
+
+replace(os.path.join(DIST_DIRECTORY, "doc", "_static", "classic.css"), "text-align: justify", "text-align: none")
 
 # Delete .doctrees
 remove_tree(os.path.join(os.path.join(DIST_DIRECTORY, "doc"), ".doctrees"), verbose=1)
@@ -111,7 +131,7 @@ make_archive(DIST_RELEASE_DIR, "zip", DIST_DIRECTORY, RELEASE_NAME)
 
 # Make config dist zip
 print("\nMaking dist config zip\n")
-make_archive(DIST_RELEASE_DIR + "-config", "gztar", os.path.join(DIST_RELEASE_DIR, "config"))
+make_archive(CONFIG_RELEASE_DIR, "gztar", DIST_DIRECTORY, "config")
 
 print("\nRemoving " + DIST_RELEASE_DIR + "\n")
 remove_tree(DIST_RELEASE_DIR)
