@@ -10,7 +10,7 @@ RUN pip install requests
 RUN pip install dxlclient
 
 # Build service
-COPY . /tmp/build
+COPY ../. /tmp/build
 WORKDIR /tmp/build
 RUN python ./setup.py bdist_wheel
 
