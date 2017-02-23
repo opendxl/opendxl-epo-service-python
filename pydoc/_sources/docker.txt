@@ -37,17 +37,17 @@ Once you have logged into the host system, perform the following steps:
 
         `<https://github.com/opendxl/opendxl-epo-service-python/releases/latest>`_
 
-        Download the latest configuration package (dxleposervice-python-config). For example:
+        Download the latest configuration package (dxleposervice-python-dist-config). For example:
 
         .. container:: note, admonition
 
-           wget ht\ tps://github.com/opendxl/opendxl-epo-service-python/releases/download/\ |version|\/dxleposervice-python-config-\ |version|\.tar.gz
+           wget ht\ tps://github.com/opendxl/opendxl-epo-service-python/releases/download/\ |version|\/dxleposervice-python-dist-config-\ |version|\.zip
 
     4.) Extract the configuration package
 
         .. container:: note, admonition
 
-           tar -xzf dxleposervice-python-config-\ |version|\.tar.gz
+           unzip dxleposervice-python-dist-config-\ |version|\.zip
 
     5.) Populate the configuration files:
 
