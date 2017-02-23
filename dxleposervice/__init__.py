@@ -7,7 +7,7 @@ from __future__ import absolute_import
 
 from .service import EpoService
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 
 def get_version():

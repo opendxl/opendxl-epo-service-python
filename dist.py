@@ -29,8 +29,8 @@ def replace(file_path, pattern, subst):
 print("Starting dist.\n")
 
 VERSION = __import__('dxleposervice').get_version()
-RELEASE_NAME = "dxleposervice-python-distribution-" + str(VERSION)
-CONFIG_RELEASE_NAME = "dxleposervice-python-config-" + str(VERSION)
+RELEASE_NAME = "dxleposervice-python-dist-" + str(VERSION)
+CONFIG_RELEASE_NAME = "dxleposervice-python-dist-config-" + str(VERSION)
 
 DIST_PY_FILE_LOCATION = os.path.dirname(os.path.realpath(__file__))
 DIST_DIRECTORY = os.path.join(DIST_PY_FILE_LOCATION, "dist")
@@ -131,7 +131,7 @@ make_archive(DIST_RELEASE_DIR, "zip", DIST_DIRECTORY, RELEASE_NAME)
 
 # Make config dist zip
 print("\nMaking dist config zip\n")
-make_archive(CONFIG_RELEASE_DIR, "gztar", os.path.join(DIST_RELEASE_DIR, "config"))
+make_archive(CONFIG_RELEASE_DIR, "zip", os.path.join(DIST_RELEASE_DIR, "config"))
 
 print("\nRemoving " + DIST_RELEASE_DIR + "\n")
 remove_tree(DIST_RELEASE_DIR)
