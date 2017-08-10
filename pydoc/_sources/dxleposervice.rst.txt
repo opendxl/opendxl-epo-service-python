@@ -1,0 +1,17 @@
+dxleposervice package
+=====================
+
+Submodules
+----------
+
+.. toctree::
+
+   dxleposervice.service
+
+Module contents
+---------------
+
+.. automodule:: dxleposervice
+    :members:
+    :undoc-members:
+    :show-inheritance:

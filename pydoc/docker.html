@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Docker Support &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.2 documentation</title>
+    <title>Docker Support &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.3 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -25,7 +26,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.2 documentation" href="index.html" />
     <link rel="next" title="Samples Configuration" href="sampleconfig.html" />
     <link rel="prev" title="Authorization" href="authorization.html" /> 
   </head>
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="authorization.html" title="Authorization"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -71,12 +71,12 @@ container via a data volume.</p>
 <blockquote>
 <div><p>1.) Create a directory to contain the configuration files</p>
 <blockquote>
-<div><div class="note admonition container">
+<div><div class="note admonition docutils container">
 mkdir dxleposervice-config</div>
 </div></blockquote>
 <p>2.) Change to the newly created directory</p>
 <blockquote>
-<div><div class="note admonition container">
+<div><div class="note admonition docutils container">
 cd dxleposervice-config</div>
 </div></blockquote>
 <p>3.) Download the latest configuration files for the ePO DXL service</p>
@@ -84,13 +84,13 @@ cd dxleposervice-config</div>
 <div><p>The latest release of the service can be found at the following page:</p>
 <p><a class="reference external" href="https://github.com/opendxl/opendxl-epo-service-python/releases/latest">https://github.com/opendxl/opendxl-epo-service-python/releases/latest</a></p>
 <p>Download the latest configuration package (dxleposervice-python-dist-config). For example:</p>
-<div class="note admonition container">
-wget https://github.com/opendxl/opendxl-epo-service-python/releases/download/0.1.2/dxleposervice-python-dist-config-0.1.2.zip</div>
+<div class="note admonition docutils container">
+wget https://github.com/opendxl/opendxl-epo-service-python/releases/download/0.1.3/dxleposervice-python-dist-config-0.1.3.zip</div>
 </div></blockquote>
 <p>4.) Extract the configuration package</p>
 <blockquote>
-<div><div class="note admonition container">
-unzip dxleposervice-python-dist-config-0.1.2.zip</div>
+<div><div class="note admonition docutils container">
+unzip dxleposervice-python-dist-config-0.1.3.zip</div>
 </div></blockquote>
 <p>5.) Populate the configuration files:</p>
 <blockquote>
@@ -118,8 +118,8 @@ The release version of the ePO DXL service</li>
 </div></blockquote>
 <p>For example:</p>
 <blockquote>
-<div><div class="note admonition container">
-docker pull opendxl/opendxl-epo-service-python:0.1.2</div>
+<div><div class="note admonition docutils container">
+docker pull opendxl/opendxl-epo-service-python:0.1.3</div>
 </div></blockquote>
 </div>
 <div class="section" id="create-docker-container">
@@ -140,8 +140,8 @@ The version of the image (See &#8220;Pull Docker Image&#8221; section above)</li
 </div></blockquote>
 <p>For example:</p>
 <blockquote>
-<div><div class="note admonition container">
-docker run -d &#8211;name dxleposervice -v /home/myuser/dxleposervice-config:/opt/dxleposervice-config opendxl/opendxl-epo-service-python:0.1.2</div>
+<div><div class="note admonition docutils container">
+docker run -d &#8211;name dxleposervice -v /home/myuser/dxleposervice-config:/opt/dxleposervice-config opendxl/opendxl-epo-service-python:0.1.3</div>
 </div></blockquote>
 <p><strong>Note:</strong> A restart policy can be specified via the restart flag (<code class="docutils literal"><span class="pre">--restart</span> <span class="pre">&lt;policy&gt;</span></code>). This flag can be used to restart
 the container when the system reboots or if the service terminates abnormally. The <code class="docutils literal"><span class="pre">unless-stopped</span></code> policy will
@@ -232,7 +232,7 @@ restart the container unless it has been explicitly stopped.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/docker.txt"
+      <li><a href="_sources/docker.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -265,12 +265,12 @@ restart the container unless it has been explicitly stopped.</p>
         <li class="right" >
           <a href="authorization.html" title="Authorization"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, McAfee Inc.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
     </div>
   </body>
 </html>
