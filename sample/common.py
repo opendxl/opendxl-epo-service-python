@@ -1,6 +1,5 @@
-
 """
-Common definitions for the ePO DXL service samples.
+Common definitions for the samples.
 This includes the defining the path to the configuration file used to initialize the DXL client
 in addition to setting up the logger appropriately.
 """

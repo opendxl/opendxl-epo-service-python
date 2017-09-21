@@ -1,40 +1,51 @@
+import os
+
 from setuptools import setup
 import distutils.command.sdist
 
-from pkg_resources import Distribution
-from distutils.dist import DistributionMetadata
 import setuptools.command.sdist
 
 # Patch setuptools' sdist behaviour with distutils' sdist behaviour
 setuptools.command.sdist.sdist.run = distutils.command.sdist.sdist.run
 
-VERSION = __import__('dxleposervice').get_version()
+version_info = {}
+cwd=os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(cwd, "dxleposervice", "_version.py")) as f:
+    exec(f.read(), version_info)
 
 dist = setup(
-    # Application name:
+    # Package name:
     name="dxleposervice",
 
     # Version number:
-    version=VERSION,
+    version=version_info["__version__"],
 
     # Requirements
-    install_requires={
-        "dxlclient",
-        "requests"
-    },
+    install_requires=[
+        "requests",
+        "dxlbootstrap>=0.1.3",
+        "dxlclient"
+    ],
 
-    # Application author details:
+    # Package author details:
     author="McAfee, Inc.",
 
     # License
     license="Apache License 2.0",
 
+    # Keywords
     keywords=['opendxl', 'dxl', 'mcafee', 'service', 'epo'],
 
     # Packages
     packages=[
         "dxleposervice",
-    ],
+        "dxleposervice._config",
+        "dxleposervice._config.sample",
+        "dxleposervice._config.app"],
+
+    package_data={
+        "dxleposervice._config.sample" : ['*'],
+        "dxleposervice._config.app" : ['*']},
 
     # Details
     url="http://www.mcafee.com/",

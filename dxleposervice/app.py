@@ -1,17 +1,10 @@
-# -*- coding: utf-8 -*-
-################################################################################
-# Copyright (c) 2017 McAfee Inc. - All Rights Reserved.
-################################################################################
-
 import logging
 import os
 import json
-from threading import Lock
 
-from ConfigParser import ConfigParser, NoOptionError
+from ConfigParser import NoOptionError
 
-from dxlclient.client import DxlClient
-from dxlclient.client_config import DxlClientConfig
+from dxlbootstrap.app import Application
 from dxlclient.service import ServiceRegistrationInfo
 from dxlclient.callbacks import RequestCallback
 from dxlclient.message import ErrorResponse, Response
@@ -22,18 +15,13 @@ from _epo import _Epo
 logger = logging.getLogger(__name__)
 
 
-class EpoService(object):
+class EpoService(Application):
     """
     A DXL service that exposes the remote commands of one or more ePO servers to
     the DXL fabric. When a DXL request message is received, the remote command is invoked
     on the appropriate ePO server and its response is packaged and returned to the invoking
     client via a DXL response message.
     """
-
-    # The name of the DXL client configuration file
-    DXL_CLIENT_CONFIG_FILE = "dxlclient.config"
-    # The name of the ePO service configuration file
-    DXL_EPO_SERVICE_CONFIG_FILE = "dxleposervice.config"
 
     # The type of the ePO DXL service that is registered with the fabric
     DXL_SERVICE_TYPE = "/mcafee/service/epo/remote"
@@ -77,75 +65,49 @@ class EpoService(object):
     # The default port used to communicate with an ePO server
     DEFAULT_EPO_PORT = 8443
 
-    # The name of the "IncomingMessagePool" section within the ePO service
-    # configuration file
-    INCOMING_MESSAGE_POOL_CONFIG_SECTION = "IncomingMessagePool"
-    # The property used to specify the queue size for the incoming message pool
-    INCOMING_MESSAGE_POOL_QUEUE_SIZE_CONFIG_PROP = "queueSize"
-    # The property used to specify the thread count for the incoming message pool
-    INCOMING_MESSAGE_POOL_THREAD_COUNT_CONFIG_PROP = "threadCount"
-
-    # The default thread count for the incoming message pool
-    DEFAULT_THREAD_COUNT = 10
-    # The default queue size for the incoming message pool
-    DEFAULT_QUEUE_SIZE = 1000
-
     def __init__(self, config_dir):
         """
         Constructor parameters:
 
-        :param config_dir: The location of the configuration files for the ePO service
+        :param config_dir: The location of the configuration files for the
+            application
         """
-        self._config_dir = config_dir
-        self._dxlclient_config_path = os.path.join(config_dir, self.DXL_CLIENT_CONFIG_FILE)
-        self._dxleposervice_config_path = os.path.join(config_dir, self.DXL_EPO_SERVICE_CONFIG_FILE)
+        super(EpoService, self).__init__(config_dir, "dxleposervice.config")
+
         self._epo_by_topic = {}
-        self._dxl_client = None
         self._dxl_service = None
-        self._running = False
-        self._destroyed = False
 
-        self._incoming_thread_count = self.DEFAULT_THREAD_COUNT
-        self._incoming_queue_size = self.DEFAULT_QUEUE_SIZE
-
-        self._lock = Lock()
-
-    def __del__(self):
-        """destructor"""
-        self.destroy()
-
-    def __enter__(self):
-        """Enter with"""
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        """Exit with"""
-        self.destroy()
-
-    def _validate_config_files(self):
+    @property
+    def client(self):
         """
-        Validates the configuration files necessary for the ePO service. An exception is thrown
-        if any of the required files are inaccessible.
+        The DXL client used by the application to communicate with the DXL
+        fabric
         """
-        if not os.access(self._dxlclient_config_path, os.R_OK):
-            raise Exception(
-                "Unable to access client configuration file: {0}".format(
-                    self._dxlclient_config_path))
-        if not os.access(self._dxleposervice_config_path, os.R_OK):
-            raise Exception(
-                "Unable to access service configuration file: {0}".format(
-                    self._dxleposervice_config_path))
+        return self._dxl_client
 
-    def _load_configuration(self):
+    @property
+    def config(self):
         """
-        Loads the configuration settings from the ePO service configuration file
+        The application configuration (as read from the "dxleposervice.config" file)
         """
-        config = ConfigParser()
-        read_files = config.read(self._dxleposervice_config_path)
-        if len(read_files) is not 1:
-            raise Exception(
-                "Error attempting to read service configuration file: {0}".format(
-                    self._dxleposervice_config_path))
+        return self._config
+
+    def on_run(self):
+        """
+        Invoked when the application has started running.
+        """
+        logger.info("On 'run' callback.")
+
+    def on_load_configuration(self, config):
+        """
+        Invoked after the application-specific configuration has been loaded
+
+        This callback provides the opportunity for the application to parse
+        additional configuration properties.
+
+        :param config: The application configuration
+        """
+        logger.info("On 'load configuration' callback.")
 
         # Determine the ePO servers in the configuration file
         epo_names_str = config.get(self.GENERAL_CONFIG_SECTION, self.GENERAL_EPO_NAMES_CONFIG_PROP)
@@ -213,91 +175,27 @@ class EpoService(object):
             # Associate ePO wrapper instance with the request topic
             self._epo_by_topic[request_topic] = epo
 
-        #
-        # Load message pool settings
-        #
-
-        try:
-            self._incoming_queue_size = config.getint(self.INCOMING_MESSAGE_POOL_CONFIG_SECTION,
-                                                      self.INCOMING_MESSAGE_POOL_QUEUE_SIZE_CONFIG_PROP)
-        except NoOptionError:
-            pass
-
-        try:
-            self._incoming_thread_count = config.getint(self.INCOMING_MESSAGE_POOL_CONFIG_SECTION,
-                                                        self.INCOMING_MESSAGE_POOL_THREAD_COUNT_CONFIG_PROP)
-        except NoOptionError:
-            pass
-
-    def _dxl_connect(self):
+    def on_dxl_connect(self):
         """
-        Attempts to connect to the DXL fabric and register the ePO DXL service
+        Invoked after the client associated with the application has connected
+        to the DXL fabric.
         """
+        logger.info("On 'DXL connect' callback.")
 
-        # Connect to fabric
-        config = DxlClientConfig.create_dxl_config_from_file(self._dxlclient_config_path)
-        config.incoming_message_thread_pool_size = self._incoming_thread_count
-        config.incoming_message_queue_size = self._incoming_queue_size
-        logger.info("Incoming message configuration: queueSize={0}, threadCount={1}".format(
-            config.incoming_message_queue_size, config.incoming_message_thread_pool_size))
+    def on_register_services(self):
+        """
+        Invoked when services should be registered with the application
+        """
+        # Register service
+        service = ServiceRegistrationInfo(self.client, self.DXL_SERVICE_TYPE)
+        for request_topic in self._epo_by_topic:
+            service.add_topic(str(request_topic), _EpoRequestCallback(self.client, self._epo_by_topic))
 
-        client = DxlClient(config)
-        logger.info("Attempting to connect to DXL fabric ...")
-        client.connect()
-        logger.info("Connected to DXL fabric.")
+        logger.info("Registering service ...")
+        self.client.register_service_sync(service, self.DXL_SERVICE_REGISTRATION_TIMEOUT)
+        logger.info("Service registration succeeded.")
 
-        try:
-            # Register service
-            service = ServiceRegistrationInfo(client, self.DXL_SERVICE_TYPE)
-            for request_topic in self._epo_by_topic:
-                service.add_topic(str(request_topic), _EpoRequestCallback(client, self._epo_by_topic))
-
-            logger.info("Registering service ...")
-            client.register_service_sync(service, self.DXL_SERVICE_REGISTRATION_TIMEOUT)
-            logger.info("Service registration succeeded.")
-        except:
-            client.destroy()
-            raise
-
-        self._dxl_client = client
         self._dxl_service = service
-
-    def run(self):
-        """
-        Starts the ePO service. This will load the configuration files associated with the service,
-        connect the DXL client to the fabric, and register the ePO DXL service with the fabric.
-        """
-        with self._lock:
-            if self._running:
-                raise Exception("The ePO service is already running")
-
-            logger.info("Running service ...")
-            self._validate_config_files()
-            self._load_configuration()
-            self._dxl_connect()
-            self._running = True
-
-    def destroy(self):
-        """
-        Destroys the ePO service. This will cause the ePO DXL service to be unregistered with the fabric
-        and the DXL client to be disconnected.
-        """
-        with self._lock:
-            if self._running and not self._destroyed:
-
-                logger.info("Destroying service ...")
-                if self._dxl_client is not None:
-
-                    if self._dxl_service is not None:
-                        logger.info("Unregistering service ...")
-                        self._dxl_client.unregister_service_sync(
-                            self._dxl_service, self.DXL_SERVICE_REGISTRATION_TIMEOUT)
-                        logger.info("Service unregistration succeeded.")
-                        self._dxl_service = None
-
-                    self._dxl_client.destroy()
-                    self._dxl_client = None
-                self._destroyed = True
 
     def _get_path(self, in_path):
         """
@@ -311,6 +209,7 @@ class EpoService(object):
             if os.path.isfile(config_rel_path):
                 in_path = config_rel_path
         return in_path
+
 
 class _EpoRequestCallback(RequestCallback):
     """

@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-################################################################################
-# Copyright (c) 2017 McAfee Inc. - All Rights Reserved.
-################################################################################
-
 import logging
 from logging.config import fileConfig
 
@@ -11,15 +6,12 @@ import os
 import signal
 import threading
 
-from dxleposervice.service import EpoService
+from .app import EpoService
 
-# The location of the logging configuration file (optional)
-LOGGING_CONFIG_FILE = "logging.config"
-
-# Whether the service is running
+# Whether the application is running
 running = False
 
-# Condition used to notify that the service should exit
+# Condition used to notify that the application should exit
 run_condition = threading.Condition()
 
 
@@ -34,7 +26,7 @@ def signal_handler(signum, frame):
     global running, run_condition
     with run_condition:
         if running:
-            # Stop the service
+            # Stop the application
             running = False
             run_condition.notify()
         else:
@@ -54,7 +46,7 @@ if len(sys.argv) != 2:
 #
 
 config_dir = sys.argv[1]
-logging_config_path = os.path.join(config_dir, LOGGING_CONFIG_FILE)
+logging_config_path = os.path.join(config_dir, EpoService.LOGGING_CONFIG_FILE)
 if os.access(logging_config_path, os.R_OK):
     # Log configuration via configuration file
     fileConfig(logging_config_path, disable_existing_loggers=False)
@@ -70,15 +62,13 @@ else:
     logger.addHandler(console_handler)
     logger.setLevel(logging.INFO)
 
-
-# Create the ePO service
-with EpoService(sys.argv[1]) as epo_service:
+# Create the application
+with EpoService(sys.argv[1]) as app:
     try:
-        # Run the ePO service
-        epo_service.run()
+        # Run the application
+        app.run()
         running = True
 
-        logger.info("Waiting for requests ...")
         with run_condition:
             # Wait until notified to exit
             while running:
@@ -88,3 +78,4 @@ with EpoService(sys.argv[1]) as epo_service:
         pass
     except:
         logger.exception("Error occurred, exiting")
+        sys.exit(1)
