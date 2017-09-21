@@ -6,7 +6,7 @@ Submodules
 
 .. toctree::
 
-   dxleposervice.service
+   dxleposervice.app
 
 Module contents
 ---------------
