@@ -3,7 +3,13 @@ import logging
 import os
 import json
 
-from six.moves.configparser import NoOptionError
+# pylint: disable=unused-import
+try:
+    from configparser import ConfigParser
+    from configparser import NoOptionError
+except ImportError:
+    from ConfigParser import ConfigParser
+    from ConfigParser import NoOptionError
 
 from dxlbootstrap.app import Application
 from dxlclient.service import ServiceRegistrationInfo
