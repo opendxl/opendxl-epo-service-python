@@ -3,14 +3,6 @@ import logging
 import os
 import json
 
-# pylint: disable=unused-import
-try:
-    from configparser import ConfigParser
-    from configparser import NoOptionError
-except ImportError:
-    from ConfigParser import ConfigParser
-    from ConfigParser import NoOptionError
-
 from dxlbootstrap.app import Application
 from dxlclient.service import ServiceRegistrationInfo
 from dxlclient.callbacks import RequestCallback
@@ -105,6 +97,16 @@ class EpoService(Application):
         """
         logger.info("On 'run' callback.")
 
+    @staticmethod
+    def _get_option(config, section, option, default_value=None):
+        return config.get(section, option) \
+            if config.has_option(section, option) else default_value
+
+    @staticmethod
+    def _get_boolean_option(config, section, option, default_value=False):
+        return config.getboolean(section, option) \
+            if config.has_option(section, option) else default_value
+
     def on_load_configuration(self, config):
         """
         Invoked after the application-specific configuration has been loaded
@@ -133,46 +135,34 @@ class EpoService(Application):
             password = config.get(epo_name, self.EPO_PASSWORD_CONFIG_PROP)
 
             # Port (optional)
-            port = self.DEFAULT_EPO_PORT
-            try:
-                port = config.get(epo_name, self.EPO_PORT_CONFIG_PROP)
-            except NoOptionError:
-                pass
+            port = self._get_option(config, epo_name, self.EPO_PORT_CONFIG_PROP,
+                                    self.DEFAULT_EPO_PORT)
 
             # Whether to verify the ePO server's certificate (optional)
-            verify = self.DEFAULT_VERIFY_CERTIFICATE
-            try:
-                verify = config.getboolean(epo_name,
-                                           self.EPO_VERIFY_CERTIFICATE)
-            except NoOptionError:
-                pass
+            verify = self._get_boolean_option(config, epo_name,
+                                              self.EPO_VERIFY_CERTIFICATE,
+                                              self.DEFAULT_VERIFY_CERTIFICATE)
 
             # CA Bundle
             if verify:
-                try:
-                    ca_bundle = config.get(epo_name,
-                                           self.EPO_VERIFY_CERT_BUNDLE)
-                    if ca_bundle:
-                        ca_bundle = self._get_path(ca_bundle)
-                        verify = ca_bundle
+                ca_bundle = self._get_option(config, epo_name,
+                                             self.EPO_VERIFY_CERT_BUNDLE)
+                if ca_bundle:
+                    ca_bundle = self._get_path(ca_bundle)
+                    verify = ca_bundle
 
-                        if not os.access(verify, os.R_OK):
-                            raise Exception(
-                                "Unable to access CA bundle file/dir ({0}): {1}".format(
-                                    self.EPO_VERIFY_CERT_BUNDLE, verify))
-                except NoOptionError:
-                    pass
+                    if not os.access(verify, os.R_OK):
+                        raise Exception(
+                            "Unable to access CA bundle file/dir ({0}): {1}".format(
+                                self.EPO_VERIFY_CERT_BUNDLE, verify))
 
             # Create ePO wrapper
             epo = _Epo(name=epo_name, host=host, port=port, user=user,
                        password=password, verify=verify)
 
             # Unique identifier (optional, if not specified attempts to determine GUID)
-            unique_id = None
-            try:
-                unique_id = config.get(epo_name, self.EPO_UNIQUE_ID_CONFIG_PROP)
-            except NoOptionError:
-                pass
+            unique_id = self._get_option(config, epo_name,
+                                         self.EPO_UNIQUE_ID_CONFIG_PROP)
 
             if unique_id is None:
                 logger.info(
