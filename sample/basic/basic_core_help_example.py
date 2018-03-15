@@ -14,6 +14,7 @@ import json
 import os
 import sys
 
+from dxlbootstrap.util import MessageUtils
 from dxlclient.client_config import DxlClientConfig
 from dxlclient.client import DxlClient
 from dxlclient.message import Request, Message
@@ -42,17 +43,16 @@ with DxlClient(config) as client:
     req = Request("/mcafee/service/epo/remote/{0}".format(EPO_UNIQUE_ID))
 
     # Set the payload for the request (core.help remote command)
-    req.payload = \
-        json.dumps({
-            "command": "core.help",
-            "output": "verbose",
-            "params": {}
-        }).encode(encoding="utf-8")
+    MessageUtils.dict_to_json_payload(req, {
+        "command": "core.help",
+        "output": "verbose",
+        "params": {}
+    })
 
     # Send the request
     res = client.sync_request(req, timeout=30)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display resulting payload
-        print(res.payload.decode(encoding='utf-8'))
+        print(MessageUtils.decode_payload(res))
     else:
         print("Error: {0} ({1}) ".format(res.error_message, str(res.error_code)))

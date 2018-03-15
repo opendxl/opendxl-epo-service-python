@@ -54,7 +54,7 @@ class _Epo(object):
             response = self._client.invoke_command(
                 self.DXL_CLIENT_STATUS_REPORT_COMMAND,
                 {}, output="json")
-            response_dict = json.loads(response.decode(self.UTF_8))
+            response_dict = json.loads(response)
 
             if self.UNIQUE_ID_KEY not in response_dict:
                 raise Exception("Unable to find '{0}' in response.".format(
