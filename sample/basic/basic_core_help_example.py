@@ -8,6 +8,8 @@
 #       EPO_UNIQUE_ID : The unique identifier used to identify the ePO server
 #                       on the DXL fabric.
 
+from __future__ import absolute_import
+from __future__ import print_function
 import json
 import os
 import sys
@@ -51,6 +53,6 @@ with DxlClient(config) as client:
     res = client.sync_request(req, timeout=30)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display resulting payload
-        print res.payload.decode(encoding='utf-8')
+        print(res.payload.decode(encoding='utf-8'))
     else:
-        print "Error: {0} ({1}) ".format(res.error_message, str(res.error_code))
+        print("Error: {0} ({1}) ".format(res.error_message, str(res.error_code)))

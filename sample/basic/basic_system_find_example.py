@@ -10,6 +10,8 @@
 #
 #       SEARCH_TEXT   : The search text to use (system name, etc.)
 
+from __future__ import absolute_import
+from __future__ import print_function
 import json
 import os
 import sys
@@ -54,6 +56,6 @@ with DxlClient(config) as client:
     res = client.sync_request(req, timeout=30)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
         response_dict = json.loads(res.payload, encoding='utf-8')
-        print json.dumps(response_dict, sort_keys=True, indent=4, separators=(',', ': '))
+        print(json.dumps(response_dict, sort_keys=True, indent=4, separators=(',', ': ')))
     else:
-        print "Error: {0} ({1}) ".format(res.error_message, str(res.error_code))
+        print("Error: {0} ({1}) ".format(res.error_message, str(res.error_code)))

@@ -1,15 +1,16 @@
+from __future__ import absolute_import
 import logging
 import os
 import json
 
-from ConfigParser import NoOptionError
+from six.moves.configparser import NoOptionError
 
 from dxlbootstrap.app import Application
 from dxlclient.service import ServiceRegistrationInfo
 from dxlclient.callbacks import RequestCallback
 from dxlclient.message import ErrorResponse, Response
 
-from _epo import _Epo
+from ._epo import _Epo
 
 # Configure local logger
 logger = logging.getLogger(__name__)
