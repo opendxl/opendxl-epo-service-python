@@ -76,20 +76,19 @@ The majority of the sample code is shown below:
             req = Request("/mcafee/service/epo/remote/{0}".format(EPO_UNIQUE_ID))
 
             # Set the payload for the request (core.help remote command)
-            req.payload = \
-                json.dumps({
-                    "command": "core.help",
-                    "output": "verbose",
-                    "params": {}
-                }).encode(encoding="utf-8")
+            MessageUtils.dict_to_json_payload(req, {
+                "command": "core.help",
+                "output": "verbose",
+                "params": {}
+            })
 
             # Send the request
             res = client.sync_request(req, timeout=30)
             if res.message_type != Message.MESSAGE_TYPE_ERROR:
                 # Display resulting payload
-                print res.payload.decode(encoding='utf-8')
+                print(MessageUtils.decode_payload(res))
             else:
-                print "Error: {0} ({1}) ".format(res.error_message, str(res.error_code))
+                print("Error: {0} ({1}) ".format(res.error_message, str(res.error_code)))
 
 After connecting to the DXL fabric, a `request message` is created with a topic that targets the ePO DXL service
 including a unique identifier that is associated with the ePO server to invoke the remote command on.

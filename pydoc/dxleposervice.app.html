@@ -1,0 +1,237 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dxleposervice.app module &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="dxleposervice package" href="dxleposervice.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dxleposervice.html" title="dxleposervice package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="dxleposervice.html" accesskey="U">dxleposervice package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dxleposervice.app">
+<span id="dxleposervice-app-module"></span><h1>dxleposervice.app module<a class="headerlink" href="#module-dxleposervice.app" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="dxleposervice.app.EpoService">
+<em class="property">class </em><code class="descclassname">dxleposervice.app.</code><code class="descname">EpoService</code><span class="sig-paren">(</span><em>config_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#dxleposervice.app.EpoService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dxlbootstrap.app.Application</span></code></p>
+<p>A DXL service that exposes the remote commands of one or more ePO servers to
+the DXL fabric. When a DXL request message is received, the remote command is invoked
+on the appropriate ePO server and its response is packaged and returned to the invoking
+client via a DXL response message.</p>
+<p>Constructor parameters:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_dir</strong> -- The location of the configuration files for the
+application</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.DEFAULT_EPO_PORT">
+<code class="descname">DEFAULT_EPO_PORT</code><em class="property"> = 8443</em><a class="headerlink" href="#dxleposervice.app.EpoService.DEFAULT_EPO_PORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.DEFAULT_VERIFY_CERTIFICATE">
+<code class="descname">DEFAULT_VERIFY_CERTIFICATE</code><em class="property"> = True</em><a class="headerlink" href="#dxleposervice.app.EpoService.DEFAULT_VERIFY_CERTIFICATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.DXL_REQUEST_FORMAT">
+<code class="descname">DXL_REQUEST_FORMAT</code><em class="property"> = '/mcafee/service/epo/remote/{0}'</em><a class="headerlink" href="#dxleposervice.app.EpoService.DXL_REQUEST_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.DXL_SERVICE_REGISTRATION_TIMEOUT">
+<code class="descname">DXL_SERVICE_REGISTRATION_TIMEOUT</code><em class="property"> = 60</em><a class="headerlink" href="#dxleposervice.app.EpoService.DXL_SERVICE_REGISTRATION_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.DXL_SERVICE_TYPE">
+<code class="descname">DXL_SERVICE_TYPE</code><em class="property"> = '/mcafee/service/epo/remote'</em><a class="headerlink" href="#dxleposervice.app.EpoService.DXL_SERVICE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_HOST_CONFIG_PROP">
+<code class="descname">EPO_HOST_CONFIG_PROP</code><em class="property"> = 'host'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_HOST_CONFIG_PROP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_PASSWORD_CONFIG_PROP">
+<code class="descname">EPO_PASSWORD_CONFIG_PROP</code><em class="property"> = 'password'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_PASSWORD_CONFIG_PROP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_PORT_CONFIG_PROP">
+<code class="descname">EPO_PORT_CONFIG_PROP</code><em class="property"> = 'port'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_PORT_CONFIG_PROP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_UNIQUE_ID_CONFIG_PROP">
+<code class="descname">EPO_UNIQUE_ID_CONFIG_PROP</code><em class="property"> = 'uniqueId'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_UNIQUE_ID_CONFIG_PROP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_USER_CONFIG_PROP">
+<code class="descname">EPO_USER_CONFIG_PROP</code><em class="property"> = 'user'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_USER_CONFIG_PROP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_VERIFY_CERTIFICATE">
+<code class="descname">EPO_VERIFY_CERTIFICATE</code><em class="property"> = 'verifyCertificate'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_VERIFY_CERTIFICATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.EPO_VERIFY_CERT_BUNDLE">
+<code class="descname">EPO_VERIFY_CERT_BUNDLE</code><em class="property"> = 'verifyCertBundle'</em><a class="headerlink" href="#dxleposervice.app.EpoService.EPO_VERIFY_CERT_BUNDLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.GENERAL_CONFIG_SECTION">
+<code class="descname">GENERAL_CONFIG_SECTION</code><em class="property"> = 'General'</em><a class="headerlink" href="#dxleposervice.app.EpoService.GENERAL_CONFIG_SECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.GENERAL_EPO_NAMES_CONFIG_PROP">
+<code class="descname">GENERAL_EPO_NAMES_CONFIG_PROP</code><em class="property"> = 'epoNames'</em><a class="headerlink" href="#dxleposervice.app.EpoService.GENERAL_EPO_NAMES_CONFIG_PROP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.client">
+<code class="descname">client</code><a class="headerlink" href="#dxleposervice.app.EpoService.client" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DXL client used by the application to communicate with the DXL
+fabric</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dxleposervice.app.EpoService.config">
+<code class="descname">config</code><a class="headerlink" href="#dxleposervice.app.EpoService.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>The application configuration (as read from the &quot;dxleposervice.config&quot; file)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dxleposervice.app.EpoService.on_dxl_connect">
+<code class="descname">on_dxl_connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dxleposervice.app.EpoService.on_dxl_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked after the client associated with the application has connected
+to the DXL fabric.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dxleposervice.app.EpoService.on_load_configuration">
+<code class="descname">on_load_configuration</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#dxleposervice.app.EpoService.on_load_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked after the application-specific configuration has been loaded</p>
+<p>This callback provides the opportunity for the application to parse
+additional configuration properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> -- The application configuration</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="dxleposervice.app.EpoService.on_register_services">
+<code class="descname">on_register_services</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dxleposervice.app.EpoService.on_register_services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when services should be registered with the application</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dxleposervice.app.EpoService.on_run">
+<code class="descname">on_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dxleposervice.app.EpoService.on_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when the application has started running.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dxleposervice.html"
+                        title="previous chapter">dxleposervice package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dxleposervice.app.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dxleposervice.html" title="dxleposervice package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="dxleposervice.html" >dxleposervice package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

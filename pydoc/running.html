@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Running Service &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</title>
-    
+    <title>Running Service &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Authorization" href="authorization.html" />
     <link rel="prev" title="ePO Certificate Verification" href="epocertverification.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,7 +33,7 @@
         <li class="right" >
           <a href="epocertverification.html" title="ePO Certificate Verification"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -59,15 +47,15 @@
 <p>Once the ePO DXL service module has been installed and the configuration files are populated it can be started by
 executing the following command line:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">dxleposervice</span> <span class="o">&lt;</span><span class="n">configuration</span><span class="o">-</span><span class="n">directory</span><span class="o">&gt;</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">dxleposervice</span> <span class="o">&lt;</span><span class="n">configuration</span><span class="o">-</span><span class="n">directory</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">&lt;configuration-directory&gt;</span></code> argument must point to a directory containing the configuration files
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;configuration-directory&gt;</span></code> argument must point to a directory containing the configuration files
 required for the ePO DXL service (see <a class="reference internal" href="configuration.html"><span class="doc">Service Configuration</span></a>).</p>
 </div></blockquote>
 <p>For example:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">dxleposervice</span> <span class="n">config</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">dxleposervice</span> <span class="n">config</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -75,7 +63,7 @@ required for the ePO DXL service (see <a class="reference internal" href="config
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>The output from starting the service should appear similar to the following:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">service</span> <span class="o">...</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">service</span> <span class="o">...</span>
 <span class="n">Request</span> <span class="n">topic</span> <span class="s1">&#39;/mcafee/service/epo/remote/epo1&#39;</span> <span class="n">associated</span> <span class="k">with</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
 <span class="n">Incoming</span> <span class="n">message</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">queueSize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">threadCount</span><span class="o">=</span><span class="mi">10</span>
 <span class="n">Attempting</span> <span class="n">to</span> <span class="n">connect</span> <span class="n">to</span> <span class="n">DXL</span> <span class="n">fabric</span> <span class="o">...</span>
@@ -89,17 +77,17 @@ required for the ePO DXL service (see <a class="reference internal" href="config
 <p>Part of the output includes the DXL <cite>request topic</cite> that is associated with each <cite>ePO server</cite> that is defined within
 the service configuration file.</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Request</span> <span class="n">topic</span> <span class="s1">&#39;/mcafee/service/epo/remote/epo1&#39;</span> <span class="n">associated</span> <span class="k">with</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Request</span> <span class="n">topic</span> <span class="s1">&#39;/mcafee/service/epo/remote/epo1&#39;</span> <span class="n">associated</span> <span class="k">with</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The output above states that <code class="docutils literal"><span class="pre">/mcafee/service/epo/remote/epo1</span></code> is the request topic that is associated with
-the ePO server <code class="docutils literal"><span class="pre">epo1</span></code> defined in the service configuration file. The last part of the request topic (<code class="docutils literal"><span class="pre">epo1</span></code>)
-corresponds to the <code class="docutils literal"><span class="pre">uniqueId</span></code> property value for the ePO server in the configuration file.</p>
-<p>The <code class="docutils literal"><span class="pre">uniqueId</span></code> property is optional. If a value for this property is not specified, the service will lookup
+<p>The output above states that <code class="docutils literal notranslate"><span class="pre">/mcafee/service/epo/remote/epo1</span></code> is the request topic that is associated with
+the ePO server <code class="docutils literal notranslate"><span class="pre">epo1</span></code> defined in the service configuration file. The last part of the request topic (<code class="docutils literal notranslate"><span class="pre">epo1</span></code>)
+corresponds to the <code class="docutils literal notranslate"><span class="pre">uniqueId</span></code> property value for the ePO server in the configuration file.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">uniqueId</span></code> property is optional. If a value for this property is not specified, the service will lookup
 the unique GUID for the ePO server and use that for its unique identifier. For example:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">GUID</span> <span class="s1">&#39;{4d993fec-70e6-41e1-bd4e-3164c77d7c92}&#39;</span> <span class="n">found</span> <span class="k">for</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GUID</span> <span class="s1">&#39;{4d993fec-70e6-41e1-bd4e-3164c77d7c92}&#39;</span> <span class="n">found</span> <span class="k">for</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
 <span class="n">Request</span> <span class="n">topic</span> <span class="s1">&#39;/mcafee/service/epo/remote/{4d993fec-70e6-41e1-bd4e-3164c77d7c92}&#39;</span> <span class="n">associated</span> <span class="k">with</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
 </pre></div>
 </div>
@@ -136,12 +124,14 @@ the unique GUID for the ePO server and use that for its unique identifier. For e
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -163,12 +153,12 @@ the unique GUID for the ePO server and use that for its unique identifier. For e
         <li class="right" >
           <a href="epocertverification.html" title="ePO Certificate Verification"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, McAfee Inc.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+        &#169; Copyright 2018, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>

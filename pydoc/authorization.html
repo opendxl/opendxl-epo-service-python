@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Authorization &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</title>
-    
+    <title>Authorization &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Docker Support" href="docker.html" />
     <link rel="prev" title="Running Service" href="running.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,7 +33,7 @@
         <li class="right" >
           <a href="running.html" title="Running Service"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -68,7 +56,7 @@ to the DXL fabric.</strong></p>
 <p>The first step is to create a <cite>Topic Group</cite> for the <cite>ePO DXL Service</cite>.</p>
 <img alt="_images/addtopicgroup.png" src="_images/addtopicgroup.png" />
 <p>As shown in the screenshot above, a <cite>topic</cite> should be added for each ePO server that is being exposed by the
-ePO DXL service. The last portion of the topic matches the <code class="docutils literal"><span class="pre">uniqueId</span></code> associated with the ePO Server
+ePO DXL service. The last portion of the topic matches the <code class="docutils literal notranslate"><span class="pre">uniqueId</span></code> associated with the ePO Server
 (see <a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a>).</p>
 <p>Multiple topic groups can be created if different authorization policies are necessary for different ePO servers.</p>
 </div>
@@ -76,12 +64,12 @@ ePO DXL service. The last portion of the topic matches the <code class="docutils
 <h2>Service Authorization<a class="headerlink" href="#service-authorization" title="Permalink to this headline">¶</a></h2>
 <p>This section walks through the steps to restrict which clients can provide (run) the ePO DXL Service.</p>
 <img alt="_images/restrictreceive.png" src="_images/restrictreceive.png" />
-<p>As show in the screenshot above, select the &#8220;ePO DXL Service&#8221; topic group and then select the
-&#8220;Restrict Receive Certificates&#8221; action.</p>
+<p>As show in the screenshot above, select the &quot;ePO DXL Service&quot; topic group and then select the
+&quot;Restrict Receive Certificates&quot; action.</p>
 <img alt="_images/restrictreceivecert.png" src="_images/restrictreceivecert.png" />
 <p>Next, select the certificate(s) associated with the clients that will be providing (running) the ePO DXL Service.
-In the screenshot above, the certificate with the common name of &#8220;ePO DXL Service&#8221; is selected. Once the
-appropriate certificates are selected click &#8220;OK&#8221;.</p>
+In the screenshot above, the certificate with the common name of &quot;ePO DXL Service&quot; is selected. Once the
+appropriate certificates are selected click &quot;OK&quot;.</p>
 <img alt="_images/restrictsend.png" src="_images/restrictsend.png" />
 <p>At this point we have restricted which clients can provide the ePO DXL service, but we have done nothing to restrict
 which clients can invoke the service. The easiest thing to do is to limit the sending capability to the same
@@ -89,23 +77,23 @@ certificate that is providing the service. This effectively means that that no c
 the ePO DXL service.</p>
 <p>There must always be send restrictions associated with the ePO DXL service. If no restrictions exist, all clients are
 permitted to invoke the service.</p>
-<p>As show in the screenshot above, select the &#8220;ePO DXL Service&#8221; topic group and then select the
-&#8220;Restrict Send Certificates&#8221; action.</p>
+<p>As show in the screenshot above, select the &quot;ePO DXL Service&quot; topic group and then select the
+&quot;Restrict Send Certificates&quot; action.</p>
 <img alt="_images/restrictsendcert.png" src="_images/restrictsendcert.png" />
 <p>Next, select the same certificates that were chosen in the previous step for restricting receive.
-In the screenshot above, the certificate with the common name of &#8220;ePO DXL Service&#8221; is selected. Once the
-appropriate certificates are selected click &#8220;OK&#8221;.</p>
+In the screenshot above, the certificate with the common name of &quot;ePO DXL Service&quot; is selected. Once the
+appropriate certificates are selected click &quot;OK&quot;.</p>
 </div>
 <div class="section" id="client-authorization">
 <span id="id1"></span><h2>Client Authorization<a class="headerlink" href="#client-authorization" title="Permalink to this headline">¶</a></h2>
 <p>This section walks through the steps to restrict which clients can invoke the ePO DXL Service.</p>
 <img alt="_images/restrictsend2.png" src="_images/restrictsend2.png" />
-<p>As show in the screenshot above, select the &#8220;ePO DXL Service&#8221; topic group and then select the
-&#8220;Restrict Send Certificates&#8221; action.</p>
+<p>As show in the screenshot above, select the &quot;ePO DXL Service&quot; topic group and then select the
+&quot;Restrict Send Certificates&quot; action.</p>
 <img alt="_images/restrictsendcert2.png" src="_images/restrictsendcert2.png" />
 <p>Next, select the certificates associated with the clients that are allowed to invoke the ePO DXL Service.
-In the screenshot above, the certificates with common names of &#8220;ePO DXL Service&#8221; and
-&#8220;ePO DXL Service Samples Client&#8221; are selected. Once the appropriate certificates are selected click &#8220;OK&#8221;.</p>
+In the screenshot above, the certificates with common names of &quot;ePO DXL Service&quot; and
+&quot;ePO DXL Service Samples Client&quot; are selected. Once the appropriate certificates are selected click &quot;OK&quot;.</p>
 </div>
 </div>
 
@@ -140,12 +128,14 @@ In the screenshot above, the certificates with common names of &#8220;ePO DXL Se
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -167,12 +157,12 @@ In the screenshot above, the certificates with common names of &#8220;ePO DXL Se
         <li class="right" >
           <a href="running.html" title="Running Service"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, McAfee Inc.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+        &#169; Copyright 2018, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>

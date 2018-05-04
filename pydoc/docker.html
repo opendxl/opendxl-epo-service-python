@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Docker Support &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</title>
-    
+    <title>Docker Support &#8212; McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Samples Configuration" href="sampleconfig.html" />
     <link rel="prev" title="Authorization" href="authorization.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,7 +33,7 @@
         <li class="right" >
           <a href="authorization.html" title="Authorization"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -85,12 +73,12 @@ cd dxleposervice-config</div>
 <p><a class="reference external" href="https://github.com/opendxl/opendxl-epo-service-python/releases/latest">https://github.com/opendxl/opendxl-epo-service-python/releases/latest</a></p>
 <p>Download the latest configuration package (dxleposervice-python-dist-config). For example:</p>
 <div class="note admonition docutils container">
-wget https://github.com/opendxl/opendxl-epo-service-python/releases/download/0.1.4/dxleposervice-python-dist-config-0.1.4.zip</div>
+wget https://github.com/opendxl/opendxl-epo-service-python/releases/download/0.2.0/dxleposervice-python-dist-config-0.2.0.zip</div>
 </div></blockquote>
 <p>4.) Extract the configuration package</p>
 <blockquote>
 <div><div class="note admonition docutils container">
-unzip dxleposervice-python-dist-config-0.1.4.zip</div>
+unzip dxleposervice-python-dist-config-0.2.0.zip</div>
 </div></blockquote>
 <p>5.) Populate the configuration files:</p>
 <blockquote>
@@ -107,11 +95,11 @@ unzip dxleposervice-python-dist-config-0.1.4.zip</div>
 <p>The next step is to <cite>pull</cite> the ePO DXL service image from the Docker repository.</p>
 <p>The image can be pulled using the following Docker command:</p>
 <blockquote>
-<div><p><code class="docutils literal"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">opendxl/opendxl-epo-service-python:&lt;release-version&gt;</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">opendxl/opendxl-epo-service-python:&lt;release-version&gt;</span></code></p>
 <p>The following parameters must be specified:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">release-version</span></code>
+<li><code class="docutils literal notranslate"><span class="pre">release-version</span></code>
 The release version of the ePO DXL service</li>
 </ul>
 </div></blockquote>
@@ -119,7 +107,7 @@ The release version of the ePO DXL service</li>
 <p>For example:</p>
 <blockquote>
 <div><div class="note admonition docutils container">
-docker pull opendxl/opendxl-epo-service-python:0.1.4</div>
+docker pull opendxl/opendxl-epo-service-python:0.2.0</div>
 </div></blockquote>
 </div>
 <div class="section" id="create-docker-container">
@@ -127,24 +115,24 @@ docker pull opendxl/opendxl-epo-service-python:0.1.4</div>
 <p>The final step is to create a Docker container based on the pulled image.</p>
 <p>The container can be created using the following Docker command:</p>
 <blockquote>
-<div><p><code class="docutils literal"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-d</span> <span class="pre">--name</span> <span class="pre">dxleposervice</span> <span class="pre">-v</span> <span class="pre">&lt;host-config-dir&gt;:/opt/dxleposervice-config</span> <span class="pre">opendxl/opendxl-epo-service-python:&lt;release-version&gt;</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-d</span> <span class="pre">--name</span> <span class="pre">dxleposervice</span> <span class="pre">-v</span> <span class="pre">&lt;host-config-dir&gt;:/opt/dxleposervice-config</span> <span class="pre">opendxl/opendxl-epo-service-python:&lt;release-version&gt;</span></code></p>
 <p>The following parameters must be specified:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">host-config-dir</span></code>
+<li><code class="docutils literal notranslate"><span class="pre">host-config-dir</span></code>
 The directory on the host that contains the service configuration files</li>
-<li><code class="docutils literal"><span class="pre">release-version</span></code>
-The version of the image (See &#8220;Pull Docker Image&#8221; section above)</li>
+<li><code class="docutils literal notranslate"><span class="pre">release-version</span></code>
+The version of the image (See &quot;Pull Docker Image&quot; section above)</li>
 </ul>
 </div></blockquote>
 </div></blockquote>
 <p>For example:</p>
 <blockquote>
 <div><div class="note admonition docutils container">
-docker run -d &#8211;name dxleposervice -v /home/myuser/dxleposervice-config:/opt/dxleposervice-config opendxl/opendxl-epo-service-python:0.1.4</div>
+docker run -d --name dxleposervice -v /home/myuser/dxleposervice-config:/opt/dxleposervice-config opendxl/opendxl-epo-service-python:0.2.0</div>
 </div></blockquote>
-<p><strong>Note:</strong> A restart policy can be specified via the restart flag (<code class="docutils literal"><span class="pre">--restart</span> <span class="pre">&lt;policy&gt;</span></code>). This flag can be used to restart
-the container when the system reboots or if the service terminates abnormally. The <code class="docutils literal"><span class="pre">unless-stopped</span></code> policy will
+<p><strong>Note:</strong> A restart policy can be specified via the restart flag (<code class="docutils literal notranslate"><span class="pre">--restart</span> <span class="pre">&lt;policy&gt;</span></code>). This flag can be used to restart
+the container when the system reboots or if the service terminates abnormally. The <code class="docutils literal notranslate"><span class="pre">unless-stopped</span></code> policy will
 restart the container unless it has been explicitly stopped.</p>
 </div>
 <div class="section" id="additional-docker-commands">
@@ -154,13 +142,13 @@ restart the container unless it has been explicitly stopped.</p>
 <div><ul>
 <li><p class="first"><strong>Container Status</strong></p>
 <blockquote>
-<div><p>The <code class="docutils literal"><span class="pre">ps</span></code> command can be used to show the status of the container.</p>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">ps</span></code> command can be used to show the status of the container.</p>
 <blockquote>
-<div><p><code class="docutils literal"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">--filter</span> <span class="pre">name=dxleposervice</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">--filter</span> <span class="pre">name=dxleposervice</span></code></p>
 </div></blockquote>
 <p>Example output:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>  <span class="n">COMMAND</span>                 <span class="n">CREATED</span>        <span class="n">STATUS</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>  <span class="n">COMMAND</span>                 <span class="n">CREATED</span>        <span class="n">STATUS</span>
 <span class="n">c60eaf0788fe</span>  <span class="s2">&quot;python -m dxleposerv&quot;</span>  <span class="mi">7</span> <span class="n">minutes</span> <span class="n">ago</span>  <span class="n">Up</span> <span class="mi">7</span> <span class="n">minutes</span>
 </pre></div>
 </div>
@@ -169,13 +157,13 @@ restart the container unless it has been explicitly stopped.</p>
 </li>
 <li><p class="first"><strong>Container Logs</strong></p>
 <blockquote>
-<div><p>The <code class="docutils literal"><span class="pre">logs</span></code> command can be used to display the log messages for the container.</p>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">logs</span></code> command can be used to display the log messages for the container.</p>
 <blockquote>
-<div><p><code class="docutils literal"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">dxleposervice</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">dxleposervice</span></code></p>
 </div></blockquote>
 <p>Example output:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">service</span> <span class="o">...</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">service</span> <span class="o">...</span>
 <span class="n">Request</span> <span class="n">topic</span> <span class="s1">&#39;/mcafee/service/epo/remote/epo1&#39;</span> <span class="n">associated</span> <span class="k">with</span> <span class="n">ePO</span> <span class="n">server</span><span class="p">:</span> <span class="n">epo1</span>
 <span class="n">Incoming</span> <span class="n">message</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">queueSize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">threadCount</span><span class="o">=</span><span class="mi">10</span>
 <span class="n">Attempting</span> <span class="n">to</span> <span class="n">connect</span> <span class="n">to</span> <span class="n">DXL</span> <span class="n">fabric</span> <span class="o">...</span>
@@ -186,7 +174,7 @@ restart the container unless it has been explicitly stopped.</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The log output can be <cite>followed</cite> by adding a <code class="docutils literal"><span class="pre">-f</span></code> flag (similar to tail) to the logs command.</p>
+<p>The log output can be <cite>followed</cite> by adding a <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag (similar to tail) to the logs command.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Stop/Restart/Start</strong></p>
@@ -194,9 +182,9 @@ restart the container unless it has been explicitly stopped.</p>
 <div><p>The container can be stopped, restarted, and started using the following commands:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">dxleposervice</span></code></li>
-<li><code class="docutils literal"><span class="pre">docker</span> <span class="pre">restart</span> <span class="pre">dxleposervice</span></code></li>
-<li><code class="docutils literal"><span class="pre">docker</span> <span class="pre">start</span> <span class="pre">dxleposervice</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">dxleposervice</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">restart</span> <span class="pre">dxleposervice</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">start</span> <span class="pre">dxleposervice</span></code></li>
 </ul>
 </div></blockquote>
 </div></blockquote>
@@ -238,12 +226,14 @@ restart the container unless it has been explicitly stopped.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -265,12 +255,12 @@ restart the container unless it has been explicitly stopped.</p>
         <li class="right" >
           <a href="authorization.html" title="Authorization"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.1.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">McAfee ePolicy Orchestrator (ePO) DXL Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, McAfee Inc.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+        &#169; Copyright 2018, McAfee Inc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>
