@@ -3,9 +3,6 @@ FROM python:2.7-slim
 
 VOLUME ["/opt/dxleposervice-config"]
 
-# Install required packages
-RUN pip install "requests" "dxlbootstrap>=0.1.3" "dxlclient"
-
 # Copy application files
 COPY . /tmp/build
 WORKDIR /tmp/build
@@ -13,11 +10,8 @@ WORKDIR /tmp/build
 # Clean application
 RUN python ./clean.py
 
-# Build application
-RUN python ./setup.py bdist_wheel
-
-# Install application
-RUN pip install dist/*.whl
+# Install application and its dependencies
+RUN pip install .
 
 # Cleanup build
 RUN rm -rf /tmp/build
