@@ -10,10 +10,13 @@
 #
 #       SEARCH_TEXT   : The search text to use (system name, etc.)
 
+from __future__ import absolute_import
+from __future__ import print_function
 import json
 import os
 import sys
 
+from dxlbootstrap.util import MessageUtils
 from dxlclient.client_config import DxlClientConfig
 from dxlclient.client import DxlClient
 from dxlclient.message import Request, Message
@@ -43,17 +46,16 @@ with DxlClient(config) as client:
 
     req = Request("/mcafee/service/epo/remote/{0}".format(EPO_UNIQUE_ID))
 
-    req.payload = \
-        json.dumps({
-            "command": "system.find",
-            "output": "json",
-            "params": {"searchText": SEARCH_TEXT}
-        }).encode(encoding="utf-8")
+    MessageUtils.dict_to_json_payload(req, {
+        "command": "system.find",
+        "output": "json",
+        "params": {"searchText": SEARCH_TEXT}
+    })
 
     # Send the request
     res = client.sync_request(req, timeout=30)
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
-        response_dict = json.loads(res.payload, encoding='utf-8')
-        print json.dumps(response_dict, sort_keys=True, indent=4, separators=(',', ': '))
+        response_dict = MessageUtils.json_payload_to_dict(res)
+        print(json.dumps(response_dict, sort_keys=True, indent=4, separators=(',', ': ')))
     else:
-        print "Error: {0} ({1}) ".format(res.error_message, str(res.error_code))
+        print("Error: {0} ({1}) ".format(res.error_message, str(res.error_code)))

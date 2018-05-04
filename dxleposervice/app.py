@@ -1,15 +1,14 @@
+from __future__ import absolute_import
 import logging
 import os
 import json
-
-from ConfigParser import NoOptionError
 
 from dxlbootstrap.app import Application
 from dxlclient.service import ServiceRegistrationInfo
 from dxlclient.callbacks import RequestCallback
 from dxlclient.message import ErrorResponse, Response
 
-from _epo import _Epo
+from ._epo import _Epo
 
 # Configure local logger
 logger = logging.getLogger(__name__)
@@ -98,6 +97,16 @@ class EpoService(Application):
         """
         logger.info("On 'run' callback.")
 
+    @staticmethod
+    def _get_option(config, section, option, default_value=None):
+        return config.get(section, option) \
+            if config.has_option(section, option) else default_value
+
+    @staticmethod
+    def _get_boolean_option(config, section, option, default_value=False):
+        return config.getboolean(section, option) \
+            if config.has_option(section, option) else default_value
+
     def on_load_configuration(self, config):
         """
         Invoked after the application-specific configuration has been loaded
@@ -110,10 +119,12 @@ class EpoService(Application):
         logger.info("On 'load configuration' callback.")
 
         # Determine the ePO servers in the configuration file
-        epo_names_str = config.get(self.GENERAL_CONFIG_SECTION, self.GENERAL_EPO_NAMES_CONFIG_PROP)
+        epo_names_str = config.get(self.GENERAL_CONFIG_SECTION,
+                                   self.GENERAL_EPO_NAMES_CONFIG_PROP)
         epo_names = epo_names_str.split(",")
         if len(epo_names_str.strip()) is 0 or len(epo_names) is 0:
-            raise Exception("At least one ePO server must be defined in the service configuration file")
+            raise Exception(
+                "At least one ePO server must be defined in the service configuration file")
 
         # For each ePO specified, create an instance of the ePO object (used to communicate with
         # the ePO server via HTTP)
@@ -124,54 +135,48 @@ class EpoService(Application):
             password = config.get(epo_name, self.EPO_PASSWORD_CONFIG_PROP)
 
             # Port (optional)
-            port = self.DEFAULT_EPO_PORT
-            try:
-                port = config.get(epo_name, self.EPO_PORT_CONFIG_PROP)
-            except NoOptionError:
-                pass
+            port = self._get_option(config, epo_name, self.EPO_PORT_CONFIG_PROP,
+                                    self.DEFAULT_EPO_PORT)
 
             # Whether to verify the ePO server's certificate (optional)
-            verify = self.DEFAULT_VERIFY_CERTIFICATE
-            try:
-                verify = config.getboolean(epo_name, self.EPO_VERIFY_CERTIFICATE)
-            except NoOptionError:
-                pass
+            verify = self._get_boolean_option(config, epo_name,
+                                              self.EPO_VERIFY_CERTIFICATE,
+                                              self.DEFAULT_VERIFY_CERTIFICATE)
 
             # CA Bundle
             if verify:
-                try:
-                    ca_bundle = config.get(epo_name, self.EPO_VERIFY_CERT_BUNDLE)
-                    if ca_bundle:
-                        ca_bundle = self._get_path(ca_bundle)
-                        verify = ca_bundle
+                ca_bundle = self._get_option(config, epo_name,
+                                             self.EPO_VERIFY_CERT_BUNDLE)
+                if ca_bundle:
+                    ca_bundle = self._get_path(ca_bundle)
+                    verify = ca_bundle
 
-                        if not os.access(verify, os.R_OK):
-                            raise Exception(
-                                "Unable to access CA bundle file/dir ({0}): {1}".format(
-                                    self.EPO_VERIFY_CERT_BUNDLE, verify))
-                except NoOptionError:
-                    pass
+                    if not os.access(verify, os.R_OK):
+                        raise Exception(
+                            "Unable to access CA bundle file/dir ({0}): {1}".format(
+                                self.EPO_VERIFY_CERT_BUNDLE, verify))
 
             # Create ePO wrapper
             epo = _Epo(name=epo_name, host=host, port=port, user=user,
                        password=password, verify=verify)
 
             # Unique identifier (optional, if not specified attempts to determine GUID)
-            unique_id = None
-            try:
-                unique_id = config.get(epo_name, self.EPO_UNIQUE_ID_CONFIG_PROP)
-            except NoOptionError:
-                pass
+            unique_id = self._get_option(config, epo_name,
+                                         self.EPO_UNIQUE_ID_CONFIG_PROP)
 
             if unique_id is None:
-                logger.info("Attempting to determine GUID for ePO server: {0} ...".format(epo_name))
+                logger.info(
+                    "Attempting to determine GUID for ePO server: %s ...",
+                    epo_name)
                 unique_id = epo.lookup_guid()
-                logger.info("GUID '{0}' found for ePO server: {1}".format(unique_id, epo_name))
+                logger.info(
+                    "GUID '%s' found for ePO server: %s", unique_id, epo_name)
 
             # Create the request topic based on the ePO's unique identifier
             request_topic = self.DXL_REQUEST_FORMAT.format(unique_id)
-            logger.info("Request topic '{0}' associated with ePO server: {1}".format(
-                request_topic, epo_name))
+            logger.info(
+                "Request topic '%s' associated with ePO server: %s",
+                request_topic, epo_name)
             # Associate ePO wrapper instance with the request topic
             self._epo_by_topic[request_topic] = epo
 
@@ -189,10 +194,13 @@ class EpoService(Application):
         # Register service
         service = ServiceRegistrationInfo(self.client, self.DXL_SERVICE_TYPE)
         for request_topic in self._epo_by_topic:
-            service.add_topic(str(request_topic), _EpoRequestCallback(self.client, self._epo_by_topic))
+            service.add_topic(str(request_topic),
+                              _EpoRequestCallback(self.client,
+                                                  self._epo_by_topic))
 
         logger.info("Registering service ...")
-        self.client.register_service_sync(service, self.DXL_SERVICE_REGISTRATION_TIMEOUT)
+        self.client.register_service_sync(service,
+                                          self.DXL_SERVICE_REGISTRATION_TIMEOUT)
         logger.info("Service registration succeeded.")
 
         self._dxl_service = service
@@ -253,7 +261,9 @@ class _EpoRequestCallback(RequestCallback):
 
             # Determine the ePO command
             if self.CMD_NAME_KEY not in req_dict:
-                raise Exception("A command name was not specified ('{0}')".format(self.CMD_NAME_KEY))
+                raise Exception(
+                    "A command name was not specified ('{0}')".format(
+                        self.CMD_NAME_KEY))
             command = req_dict[self.CMD_NAME_KEY]
 
             # Determine the request parameters
@@ -282,4 +292,5 @@ class _EpoRequestCallback(RequestCallback):
             # Send error response
             self._dxl_client.send_response(
                 ErrorResponse(request,
-                              error_message=str(ex).encode(encoding=self.UTF_8)))
+                              error_message=str(ex).encode(
+                                  encoding=self.UTF_8)))

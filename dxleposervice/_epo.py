@@ -3,10 +3,11 @@
 # Copyright (c) 2017 McAfee Inc. - All Rights Reserved.
 ################################################################################
 
+from __future__ import absolute_import
 import json
 import logging
-import requests
 import warnings
+import requests
 from requests.auth import HTTPBasicAuth
 
 # Configure local logger
@@ -50,16 +51,20 @@ class _Epo(object):
         :return: The GUID if found (otherwise an exception will be thrown)
         """
         try:
-            response = self._client.invoke_command(self.DXL_CLIENT_STATUS_REPORT_COMMAND,
-                                                   {}, output="json")
-            response_dict = json.loads(response.decode(self.UTF_8))
+            response = self._client.invoke_command(
+                self.DXL_CLIENT_STATUS_REPORT_COMMAND,
+                {}, output="json")
+            response_dict = json.loads(response)
 
             if self.UNIQUE_ID_KEY not in response_dict:
-                raise Exception("Unable to find '{0}' in response.".format(self.UNIQUE_ID_KEY))
+                raise Exception("Unable to find '{0}' in response.".format(
+                    self.UNIQUE_ID_KEY))
 
             return response_dict[self.UNIQUE_ID_KEY]
         except:
-            logger.error("Error attempting to lookup GUID for ePO server: {0}".format(self._name))
+            logger.error(
+                "Error attempting to lookup GUID for ePO server: %s",
+                self._name)
             raise
 
     def execute(self, command, output, req_params):
@@ -90,12 +95,15 @@ class _EpoRemote(object):
         :param verify: Whether to verify the ePO server's certificate
         """
 
-        logger.debug('Initializing epoRemote for ePO {} on port {} with user {}'.format(host, port, username))
+        logger.debug(
+            'Initializing epoRemote for ePO %s on port %d with user %s',
+            host, port, username)
 
         self._baseurl = 'https://{}:{}/remote'.format(host, port)
         self._auth = HTTPBasicAuth(username, password)
         self._session = requests.Session()
         self._verify = verify
+        self._token = ''
 
     def invoke_command(self, command_name, params, output='json'):
         """
@@ -125,29 +133,33 @@ class _EpoRemote(object):
         :param params: The parameters to provide for the command
         :return: the response object from ePO
         """
-        logger.debug('Invoking command {} with the following parameters:'.format(command_name))
+        logger.debug(
+            'Invoking command %s with the following parameters:', command_name)
         logger.debug(params)
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", ".*subjectAltName.*")
             if not self._verify:
                 warnings.filterwarnings("ignore", "Unverified HTTPS request")
-            return self._session.get('{}/{}'.format(self._baseurl, command_name),
-                                     auth=self._auth,
-                                     params=params,
-                                     verify=self._verify)
+            return self._session.get(
+                '{}/{}'.format(self._baseurl, command_name),
+                auth=self._auth,
+                params=params,
+                verify=self._verify)
 
     def _save_token(self):
         """
         Retrieves the security token for this session and saves it for later requests
         """
-        self._token = self._parse_response(self._send_request('core.getSecurityToken'))
-        logger.debug('Security token received from ePO: {}'.format(self._token))
+        self._token = self._parse_response(
+            self._send_request('core.getSecurityToken'))
+        logger.debug('Security token received from ePO: %s', self._token)
 
     @staticmethod
     def _parse_response(response):
         """
-        Parses the response object from ePO. Removes the return status and code from the response body and returns
-        just the remote command response. Throws an exception if an error response is returned.
+        Parses the response object from ePO. Removes the return status and code
+        from the response body and returns just the remote command response.
+        Throws an exception if an error response is returned.
 
         :param response: the ePO remote command response object to parse
         :return: the ePO remote command results as a string
@@ -155,13 +167,14 @@ class _EpoRemote(object):
         try:
             response_body = response.text
 
-            logger.debug('Response from ePO: ' + response_body)
+            logger.debug('Response from ePO: %s', response_body)
             status = response_body[:response_body.index(':')]
-            result = response_body[response_body.index(':')+1:].strip()
+            result = response_body[response_body.index(':') + 1:].strip()
 
             if 'Error' in status:
                 code = int(status[status.index(' '):].strip())
-                raise Exception('Response failed with error code ' + str(code) + '. Message: ' + result)
+                raise Exception('Response failed with error code ' + str(
+                    code) + '. Message: ' + result)
 
             return result
         except:
