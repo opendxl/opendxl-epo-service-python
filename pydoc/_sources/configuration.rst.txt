@@ -144,7 +144,7 @@ DXL Service Configuration File (dxleposervice.config)
         |                        |          | of trusted CAs. The CA Bundle is used to ensure that the           |
         |                        |          | ePO server being connected to was signed by a valid authority.     |
         |                        |          |                                                                    |
-        |                        |          | This property is only applicable if the ``verityCertificate``      |
+        |                        |          | This property is only applicable if the ``verifyCertificate``      |
         |                        |          | property is set to ``yes``.                                        |
         +------------------------+----------+--------------------------------------------------------------------+
 
