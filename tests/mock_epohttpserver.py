@@ -77,7 +77,7 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
         elif re.search("/helloworld", self.path):
             response_content = "Hello World"
 
-        self.send_response(requests.codes.ok, response_content)
+        self.send_response(requests.codes.ok, response_content) #pylint: disable=no-member
 
         self.send_header('Content-Type', 'text/plain; charset=utf-8', )
         self.end_headers()

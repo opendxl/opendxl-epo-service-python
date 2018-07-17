@@ -134,7 +134,7 @@ disable=print-statement,
         too-many-arguments,
         missing-docstring,
         protected-access,
-        no-member
+        useless-object-inheritance
 
 
 # Enable the message, report, category or checker with the given id(s). You can
