@@ -84,8 +84,6 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
 
         self.wfile.write(response_content.encode('utf-8'))
 
-        return
-
 
     def help_cmd(self):
         listed_commands = "OK:\n"
