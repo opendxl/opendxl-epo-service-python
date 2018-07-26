@@ -1,21 +1,22 @@
 import socket
 import re
-import json
 import ssl
-import os
 import uuid
 
-try:
+try: #Python 3
     from http.server import SimpleHTTPRequestHandler
     from socketserver import TCPServer
-except ImportError:
+    import urllib.parse as urlparse
+except ImportError: #Python 2.7
     from SimpleHTTPServer import  SimpleHTTPRequestHandler
     from SocketServer import TCPServer
+    import urlparse
 
 from threading import Thread
 
 import requests
 
+from dxlbootstrap.util import MessageUtils
 from tests.test_value_constants import *
 
 TEST_FOLDER = str(os.path.dirname(os.path.abspath(__file__)).replace("\\", "/"))
@@ -38,6 +39,9 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
     SYSTEM_FIND_PATTERN = re.compile(r'/remote/system.find')
     SECURITY_TOKEN_PATTERN = re.compile(r'/remote/core.getSecurityToken')
     STATUS_REPORT_PATTERN = re.compile(r'/remote/DxlClient.getStatusReport')
+
+    SECURITY_TOKEN_PARAM = 'orion.user.security.token'
+    SEARCH_TEXT_PARAM = 'searchText'
 
     KNOWN_COMMANDS = [
         {
@@ -62,20 +66,19 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         response_content = self.error_cmd(re)
 
+        parsed_url = urlparse.urlparse(self.path)
+
         if re.search(self.HELP_PATTERN, self.path):
             response_content = self.help_cmd()
 
         elif re.search(self.SYSTEM_FIND_PATTERN, self.path):
-            response_content = self.system_find_cmd()
+            response_content = self.system_find_cmd(parsed_url)
 
         elif re.search(self.SECURITY_TOKEN_PATTERN, self.path):
             response_content = self.security_token_cmd()
 
         elif re.search(self.STATUS_REPORT_PATTERN, self.path):
-            response_content = self.dxlclient_statusreport_cmd()
-
-        elif re.search("/helloworld", self.path):
-            response_content = "Hello World"
+            response_content = self.dxlclient_statusreport_cmd(parsed_url)
 
         self.send_response(requests.codes.ok, response_content) #pylint: disable=no-member
 
@@ -102,10 +105,12 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
         return listed_commands
 
 
-    @staticmethod
-    def system_find_cmd():
-
-        return "OK:\n" + json.dumps(SYSTEM_FIND_PAYLOAD)
+    def system_find_cmd(self, parsed_url):
+        parsed_search_text = \
+            urlparse.parse_qs(parsed_url.query)[self.SEARCH_TEXT_PARAM][0]
+        if SYSTEM_FIND_OSTYPE_LINUX == parsed_search_text:
+            return "OK:\n" + MessageUtils.dict_to_json(SYSTEM_FIND_PAYLOAD)
+        return self.bad_param(self.SEARCH_TEXT_PARAM, parsed_search_text)
 
 
     @staticmethod
@@ -113,19 +118,33 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
         return "OK:\n" + TEST_SECURITY_TOKEN
 
 
-    @staticmethod
-    def dxlclient_statusreport_cmd():
-        return 'OK:\n' \
-               '{' \
+    def dxlclient_statusreport_cmd(self, parsed_url):
+        parsed_security_token = \
+            urlparse.parse_qs(parsed_url.query)[self.SECURITY_TOKEN_PARAM][0]
+
+        if TEST_SECURITY_TOKEN in parsed_security_token:
+            return 'OK:\n' \
+                '{' \
                    '"keepAliveInterval" : 1800, ' \
                    '"productVersion" : "4.1.0.184",' \
                    '"uniqueId" : "{' + str(uuid.uuid4()) + '}"'\
-               '}'
+                '}'
+        return self.bad_param(self.SECURITY_TOKEN_PARAM, parsed_security_token)
 
 
     @staticmethod
     def error_cmd(cmd_string):
         return ERROR_RESPONSE_PAYLOAD_PREFIX + str(cmd_string)
+
+    @staticmethod
+    def bad_param(param_name, param_val):
+        return MessageUtils.dict_to_json(
+            {
+                "unit_test_bad_param_name": param_name,
+                "unit_test_bad_param_val": param_val
+            },
+            pretty_print=False
+        )
 
 
 class MockServerRunner(object):

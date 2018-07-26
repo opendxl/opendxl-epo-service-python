@@ -58,6 +58,8 @@ class TestSamples(BaseClientTest):
 
                 dxl_client.disconnect()
 
+            os.remove(EPO_SERVICE_CONFIG_FILENAME)
+
 
     def test_systemfind_example(self):
        # Modify sample file to include necessary sample data
@@ -78,6 +80,12 @@ class TestSamples(BaseClientTest):
                                    + "\"\n"
                 temp_sample_file.write_file_line(target_line, replacement_line)
 
+                target_line = "SEARCH_TEXT = "
+                replacement_line = target_line + "\"" \
+                                   + SYSTEM_FIND_OSTYPE_LINUX \
+                                   + "\"\n"
+                temp_sample_file.write_file_line(target_line, replacement_line)
+
                 mock_print = BaseClientTest.run_sample(temp_sample_file.temp_file.name)
 
                 mock_print.assert_any_call(
@@ -91,3 +99,5 @@ class TestSamples(BaseClientTest):
                 )
 
                 dxl_client.disconnect()
+
+            os.remove(EPO_SERVICE_CONFIG_FILENAME)
