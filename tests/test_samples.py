@@ -5,7 +5,6 @@ from tests.test_value_constants import *
 
 
 def configure_epo_service(dxl_client, server_list):
-
     epo_service = init_config_eposervice(server_list)
 
     epo_service._dxl_client = dxl_client
@@ -41,7 +40,7 @@ class TestSamples(BaseClientTest):
                                    + "\"\n"
                 temp_sample_file.write_file_line(target_line, replacement_line)
 
-                mock_print = BaseClientTest.run_sample(temp_sample_file.temp_file.name)
+                mock_print = self.run_sample(temp_sample_file.temp_file.name)
 
                 mock_print.assert_any_call(
                     StringContains(HELP_CMD_RESPONSE_PAYLOAD)
@@ -81,7 +80,7 @@ class TestSamples(BaseClientTest):
                                    + "\"\n"
                 temp_sample_file.write_file_line(target_line, replacement_line)
 
-                mock_print = BaseClientTest.run_sample(temp_sample_file.temp_file.name)
+                mock_print = self.run_sample(temp_sample_file.temp_file.name)
 
                 mock_print.assert_any_call(
                     StringMatchesRegEx(
