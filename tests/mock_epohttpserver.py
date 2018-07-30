@@ -151,10 +151,9 @@ class MockServerRunner(object):
 
     def __init__(self, number_of_servers=1):
         self.number_of_servers = number_of_servers
-        self.servers = []
+        self.servers = {}
         self.server_info_list = []
         self.mock_server_address = ""
-
 
     def __enter__(self):
         for server_number in range(self.number_of_servers):
@@ -171,12 +170,14 @@ class MockServerRunner(object):
             )
 
             mock_server_thread = Thread(target=mock_server.serve_forever)
-            mock_server_thread.setDaemon(True)
-            mock_server_thread.start()
 
-            self.servers.append(
-                mock_server
-            )
+            self.servers[server_number] = {
+                "server": mock_server,
+                "thread": mock_server_thread
+            }
+
+            self.servers[server_number]["thread"].setDaemon(True)
+            self.servers[server_number]["thread"].start()
 
             self.server_info_list.append(
                 {
@@ -189,5 +190,6 @@ class MockServerRunner(object):
 
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        for server in self.servers:
-            server.shutdown()
+        for server_number in self.servers:
+            self.servers[server_number]["server"].shutdown()
+            self.servers[server_number]["thread"].join()

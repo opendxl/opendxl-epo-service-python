@@ -1,18 +1,13 @@
-from dxleposervice import EpoService
 from tests.mock_epohttpserver import MockServerRunner
 from tests.test_base import *
-from tests.test_service import create_eposervice_configfile
+from tests.test_service import init_config_eposervice
 from tests.test_value_constants import *
 
 
 def configure_epo_service(dxl_client, server_list):
 
-    create_eposervice_configfile(
-        config_file_name=EPO_SERVICE_CONFIG_FILENAME,
-        server_list=server_list
-    )
+    epo_service = init_config_eposervice(server_list)
 
-    epo_service = EpoService(TEST_FOLDER)
     epo_service._dxl_client = dxl_client
 
     epo_service._load_configuration()

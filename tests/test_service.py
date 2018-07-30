@@ -1,4 +1,3 @@
-import os
 import sys
 import uuid
 import json
@@ -16,6 +15,14 @@ from tests.mock_epohttpserver import MockServerRunner
 sys.path.append(
     os.path.dirname(os.path.abspath(__file__)) + "/../.."
 )
+
+def init_config_eposervice(server_list):
+    create_eposervice_configfile(
+        config_file_name=EPO_SERVICE_CONFIG_FILENAME,
+        server_list=server_list
+    )
+
+    return EpoService(TEST_FOLDER)
 
 def create_eposervice_configfile(config_file_name, server_list):
     config = ConfigParser()
@@ -46,17 +53,8 @@ class TestEpoServiceConfiguration(BaseClientTest):
     def test_loadconfig(self):
         with MockServerRunner(number_of_servers=5) as server_list:
 
-            create_eposervice_configfile(
-                config_file_name=EPO_SERVICE_CONFIG_FILENAME,
-                server_list=server_list
-            )
+            epo_service = init_config_eposervice(server_list)
 
-            # ---remember patch for later---
-            # Patch USERS_URL so that the service uses the mock server URL instead of the real URL.
-            #   with patch.dict('project.services.__dict__', {'USERS_URL': mock_users_url}):
-            #   response = get_users()
-
-            epo_service = EpoService(TEST_FOLDER)
             epo_service._load_configuration()
 
             epo_config_data = epo_service._epo_by_topic
@@ -228,15 +226,6 @@ class TestEpoRequestCallback(BaseClientTest):
 
             epo_topics = {test_topic: epo}
 
-            class TestFirstInstanceCallback(dxleposervice.app._EpoRequestCallback):
-
-                def __init__(self, dxl_client, epo_topics):
-                    dxleposervice.app._EpoRequestCallback.__init__(
-                        self,
-                        dxl_client,
-                        epo_topics
-                    )
-
             test_request = Request(test_topic)
 
             # Set the payload
@@ -248,7 +237,8 @@ class TestEpoRequestCallback(BaseClientTest):
                 }
             ).encode(encoding="UTF-8")
 
-            epo_request_callback = TestFirstInstanceCallback(mock_dxl_client, epo_topics)
+            epo_request_callback = \
+                dxleposervice.app._EpoRequestCallback(mock_dxl_client, epo_topics)
 
             epo_request_callback.on_request(test_request)
 
