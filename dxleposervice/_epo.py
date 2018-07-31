@@ -96,7 +96,7 @@ class _EpoRemote(object):
         """
 
         logger.debug(
-            'Initializing epoRemote for ePO %s on port %d with user %s',
+            'Initializing epoRemote for ePO %s on port %s with user %s',
             host, port, username)
 
         self._baseurl = 'https://{}:{}/remote'.format(host, port)
