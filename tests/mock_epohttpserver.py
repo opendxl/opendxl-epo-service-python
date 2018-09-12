@@ -80,7 +80,7 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
         elif re.search(self.STATUS_REPORT_PATTERN, self.path):
             response_content = self.dxlclient_statusreport_cmd(parsed_url)
 
-        self.send_response(requests.codes.ok)
+        self.send_response(requests.codes.ok)  # pylint: disable=no-member
 
         self.send_header('Content-Type', 'text/plain; charset=utf-8')
         self.end_headers()
