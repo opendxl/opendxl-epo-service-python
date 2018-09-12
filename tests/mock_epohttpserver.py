@@ -80,9 +80,9 @@ class MockEpoServerRequestHandler(SimpleHTTPRequestHandler):
         elif re.search(self.STATUS_REPORT_PATTERN, self.path):
             response_content = self.dxlclient_statusreport_cmd(parsed_url)
 
-        self.send_response(requests.codes.ok, response_content) #pylint: disable=no-member
+        self.send_response(requests.codes.ok)
 
-        self.send_header('Content-Type', 'text/plain; charset=utf-8', )
+        self.send_header('Content-Type', 'text/plain; charset=utf-8')
         self.end_headers()
 
         self.wfile.write(response_content.encode('utf-8'))
@@ -193,3 +193,4 @@ class MockServerRunner(object):
         for server_number in self.servers:
             self.servers[server_number]["server"].shutdown()
             self.servers[server_number]["thread"].join()
+            self.servers[server_number]["server"].server_close()
